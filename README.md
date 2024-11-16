@@ -24,4 +24,4 @@ job recommendations, advice, analysis, etc.
 3. Navigate to the project directory.
 4. Check your version of node and yarn by doing `node -v` and `yarn -v`. Ensure they are `20.x` and `4.4.0` respectively.
   1. If they are not, you will need to swap versions. For node, download `v20.18.0` from [here](https://nodejs.org/en/download/package-manager) using an installation method of your choice.
-  2. For yarn, follow [this guide.](https://docs.redwoodjs.com/docs/how-to/using-yarn/). Note that running `corepack` requires elevated permissions.
+  2. For yarn, follow [this guide](https://docs.redwoodjs.com/docs/how-to/using-yarn/). Note that running `corepack` requires elevated permissions.
