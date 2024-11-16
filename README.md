@@ -19,5 +19,6 @@ The goal is to use Natural Language Processing (NLP) to analyze and parse resume
 job recommendations, advice, analysis, etc.
 
 ## Instructions on setting up the project locally
-Please visit the RedwoodJS.md file to see instructions on how to set up a RedwoodJS project.
-You may see an error when doing `yarn install` 
+```
+  1. Please
+```
