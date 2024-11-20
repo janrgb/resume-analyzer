@@ -1,7 +1,6 @@
 import React from "react";
 import { Component } from "react";
 import './HomePage.css'
-import { Css } from "@redwoodjs/web";
 
 interface HomePageState {
   email:string,
@@ -68,9 +67,8 @@ class HomePage extends Component<{},HomePageState>{
       <input type="text" id="email" name="email" className="field" placeholder="Email" onChange={this.handleFieldChange}/>
       <input type="password" id="password" name="password" className="field" placeholder="Password" onChange={this.handleFieldChange}/>
       <button type="button" className="button" onClick={this.handleLoginClick}>Login</button>
-
-      <p className="signup">New User?</p>
-      <button type="button" className="button" onClick={this.handleYesClick}>Yes</button>
+      <div className="separator"></div>
+      <button type="button" className="button" onClick={this.handleYesClick}>New User?</button>
 
       <div id="extraField" className="hidden">
 

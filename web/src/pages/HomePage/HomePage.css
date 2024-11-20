@@ -10,6 +10,8 @@ p{
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  background-color: paleturquoise;
+  height: 1080px;
 }
 .field{
   padding: 10px;
@@ -49,9 +51,13 @@ p{
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1); /* Reset shadow */
 }
 
-.hidden{
+
+#extraField{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+}
+
+.separator{
+  height: 20px;
 }

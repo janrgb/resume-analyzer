@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
-import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
-
-import FatalErrorPage from 'src/pages/FatalErrorPage'
+import HomePage from './pages/HomePage/HomePage'
 
 import './index.css'
 import './scaffold.css'
@@ -13,11 +10,9 @@ interface AppProps {
 }
 
 const App = ({ children }: AppProps) => (
-  <FatalErrorBoundary page={FatalErrorPage}>
-    <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <RedwoodApolloProvider>{children}</RedwoodApolloProvider>
-    </RedwoodProvider>
-  </FatalErrorBoundary>
+  <div className='parent'>
+  <HomePage></HomePage>
+  </div>
 )
 
 export default App
