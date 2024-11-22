@@ -10,6 +10,8 @@ A platform where users can upload resumes and receive feedback on improving them
 - Samson Zheng: sz35@njit.edu | aceflaviuskaizoku @ Discord
 - Irving Castillo: ic24@njit.edu | irving918 @ Discord
 
+Link to Trello: [https://trello.com/b/Q0V4YLtD/resume-analyzer](https://trello.com/b/Q0V4YLtD/resume-analyzer)
+
 ## Project Overview
 This project is built with RedwoodJS. The frontend is made with ReactJS and tested with
 Storybook. The backend is made with Prisma for database communication and automated migrations.
