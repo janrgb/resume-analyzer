@@ -36,7 +36,37 @@ class HomePage extends Component<{}, HomePageState> {
     if (this.state.email == '' || this.state.password == '') {
       alert('Missing Data')
     } else {
-      alert('Success')
+      const url = '*OUR GRAPHQL LOGIN POST ENDPOINT URL*'
+
+      interface GraphQLResponse {
+        data: {
+          token: string
+        }
+      }
+
+      async function fetchGraphQLData() {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.password,
+          }),
+        })
+        const responseData: GraphQLResponse = await response.json()
+
+        console.log(responseData.data.token)
+
+        localStorage.setItem('token', responseData.data.token)
+
+        if (responseData.data.token =="login-successful"){
+          alert('Welcome '+this.state.username+'!')
+        }
+        else{
+          alert('Invalid login credentials.')
+        }
+
+
+      }
     }
   }
 
