@@ -7347,6 +7347,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/busboy@npm:^1.5.0":
+  version: 1.5.4
+  resolution: "@types/busboy@npm:1.5.4"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/0bdd209069a445d5a71277e558978ec0db1b1a3d108335da96477d017177ae349c4d81d604db0bea19e3c99c10af2d60dbac20e36cef7cb7a517e5a4760738bd
+  languageName: node
+  linkType: hard
+
 "@types/connect@npm:*":
   version: 3.4.38
   resolution: "@types/connect@npm:3.4.38"
@@ -7668,6 +7677,13 @@ __metadata:
   version: 2.4.4
   resolution: "@types/normalize-package-data@npm:2.4.4"
   checksum: 10c0/aef7bb9b015883d6f4119c423dd28c4bdc17b0e8a0ccf112c78b4fe0e91fbc4af7c6204b04bba0e199a57d2f3fbbd5b4a14bf8739bf9d2a39b2a0aad545e0f86
+  languageName: node
+  linkType: hard
+
+"@types/object-path@npm:^0.11.1":
+  version: 0.11.4
+  resolution: "@types/object-path@npm:0.11.4"
+  checksum: 10c0/fb7f71b170013cf23d323782f12d25e8fa3e2d4048ee3d4d71ca7fe9c553ceeaaa720560bae9925a1c6b893f6d02bbaefad6d68be52c0bd6b136722a5baba77d
   languageName: node
   linkType: hard
 
@@ -8575,7 +8591,9 @@ __metadata:
     "@types/bcrypt": "npm:^5"
     "@types/jsonwebtoken": "npm:^9"
     bcrypt: "npm:^5.1.1"
+    graphql-upload: "npm:^17.0.0"
     jsonwebtoken: "npm:^9.0.2"
+    jwt-decode: "npm:^4.0.0"
   languageName: unknown
   linkType: soft
 
@@ -12948,6 +12966,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fs-capacitor@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "fs-capacitor@npm:8.0.0"
+  checksum: 10c0/6638b61e25a815ae5ffb86426c961457bcd5a6dfd194e51a57cb7094f943d4a1a2d2e7323952dc9ff8fe1e6e017908951f342b939785af4feec58148eda5b805
+  languageName: node
+  linkType: hard
+
 "fs-constants@npm:^1.0.0":
   version: 1.0.0
   resolution: "fs-constants@npm:1.0.0"
@@ -13477,6 +13502,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"graphql-upload@npm:^17.0.0":
+  version: 17.0.0
+  resolution: "graphql-upload@npm:17.0.0"
+  dependencies:
+    "@types/busboy": "npm:^1.5.0"
+    "@types/node": "npm:*"
+    "@types/object-path": "npm:^0.11.1"
+    busboy: "npm:^1.6.0"
+    fs-capacitor: "npm:^8.0.0"
+    http-errors: "npm:^2.0.0"
+    object-path: "npm:^0.11.8"
+  peerDependencies:
+    "@types/express": 4.0.29 - 5
+    "@types/koa": ^2.11.4
+    graphql: ^16.3.0
+  peerDependenciesMeta:
+    "@types/express":
+      optional: true
+    "@types/koa":
+      optional: true
+  checksum: 10c0/f6318375645c917e64b5133762108b6a0000295c3689243b8c6e827bfee55efca3622a6b1e0db85d96aa5a1db13e025e4c670708e719092ba83041ddec9a9f29
+  languageName: node
+  linkType: hard
+
 "graphql-ws@npm:5.12.1":
   version: 5.12.1
   resolution: "graphql-ws@npm:5.12.1"
@@ -13734,7 +13783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-errors@npm:2.0.0":
+"http-errors@npm:2.0.0, http-errors@npm:^2.0.0":
   version: 2.0.0
   resolution: "http-errors@npm:2.0.0"
   dependencies:
@@ -15531,6 +15580,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jwt-decode@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "jwt-decode@npm:4.0.0"
+  checksum: 10c0/de75bbf89220746c388cf6a7b71e56080437b77d2edb29bae1c2155048b02c6b8c59a3e5e8d6ccdfd54f0b8bda25226e491a4f1b55ac5f8da04cfbadec4e546c
+  languageName: node
+  linkType: hard
+
 "keyv@npm:^3.0.0":
   version: 3.1.0
   resolution: "keyv@npm:3.1.0"
@@ -16928,6 +16984,13 @@ __metadata:
   version: 1.1.1
   resolution: "object-keys@npm:1.1.1"
   checksum: 10c0/b11f7ccdbc6d406d1f186cdadb9d54738e347b2692a14439ca5ac70c225fa6db46db809711b78589866d47b25fc3e8dee0b4c722ac751e11180f9380e3d8601d
+  languageName: node
+  linkType: hard
+
+"object-path@npm:^0.11.8":
+  version: 0.11.8
+  resolution: "object-path@npm:0.11.8"
+  checksum: 10c0/73b1f33bb30a7032d8cce2e3dcffd82b80a83d8304e80b4f83b4f456165625de9907f1ca7f7441d4dfb5e73429ace1e5bf9d9315636ac0aacc76392cc21d1672
   languageName: node
   linkType: hard
 
@@ -21730,7 +21793,9 @@ __metadata:
     "@types/react": "npm:^18.2.55"
     "@types/react-dom": "npm:^18.2.19"
     autoprefixer: "npm:^10.4.20"
+    graphql-upload: "npm:^17.0.0"
     humanize-string: "npm:2.1.0"
+    jwt-decode: "npm:^4.0.0"
     postcss: "npm:^8.4.49"
     postcss-loader: "npm:^8.1.1"
     react: "npm:18.3.1"

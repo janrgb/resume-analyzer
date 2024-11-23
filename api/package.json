@@ -6,7 +6,9 @@
     "@redwoodjs/api": "8.4.1",
     "@redwoodjs/graphql-server": "8.4.1",
     "bcrypt": "^5.1.1",
-    "jsonwebtoken": "^9.0.2"
+    "graphql-upload": "^17.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5",
