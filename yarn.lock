@@ -7567,6 +7567,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:^9":
+  version: 9.0.7
+  resolution: "@types/jsonwebtoken@npm:9.0.7"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/e1cd0e48fcae21b1d4378887a23453bd7212b480a131b11bcda2cdeb0687d03c9646ee5ba592e04cfaf76f7cc80f179950e627cdb3ebc90a5923bce49a35631a
+  languageName: node
+  linkType: hard
+
 "@types/keyv@npm:^3.1.1":
   version: 3.1.4
   resolution: "@types/keyv@npm:3.1.4"
@@ -8557,14 +8566,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"api@workspace:api":
+"api@workspace:^, api@workspace:api":
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
     "@redwoodjs/api": "npm:8.4.1"
     "@redwoodjs/graphql-server": "npm:8.4.1"
     "@types/bcrypt": "npm:^5"
+    "@types/jsonwebtoken": "npm:^9"
     bcrypt: "npm:^5.1.1"
+    jsonwebtoken: "npm:^9.0.2"
   languageName: unknown
   linkType: soft
 
@@ -15469,7 +15480,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:9.0.2":
+"jsonwebtoken@npm:9.0.2, jsonwebtoken@npm:^9.0.2":
   version: 9.0.2
   resolution: "jsonwebtoken@npm:9.0.2"
   dependencies:
@@ -19137,10 +19148,13 @@ __metadata:
     "@redwoodjs/cli-storybook-vite": "npm:8.4.1"
     "@redwoodjs/core": "npm:8.4.1"
     "@redwoodjs/project-config": "npm:8.4.1"
+    api: "workspace:^"
     bcrypt: "npm:^5.1.1"
+    jsonwebtoken: "npm:^9.0.2"
     prettier: "npm:^3.3.3"
     prettier-plugin-tailwindcss: "npm:^0.5.12"
     typescript: "npm:^4.9.5"
+    workspace: "npm:^0.0.1-preview.1"
   languageName: unknown
   linkType: soft
 
@@ -21946,6 +21960,13 @@ __metadata:
   version: 1.0.0
   resolution: "wordwrap@npm:1.0.0"
   checksum: 10c0/7ed2e44f3c33c5c3e3771134d2b0aee4314c9e49c749e37f464bf69f2bcdf0cbf9419ca638098e2717cff4875c47f56a007532f6111c3319f557a2ca91278e92
+  languageName: node
+  linkType: hard
+
+"workspace@npm:^0.0.1-preview.1":
+  version: 0.0.1-preview.1
+  resolution: "workspace@npm:0.0.1-preview.1"
+  checksum: 10c0/8c2a2d67ff7d02edbbdde587ca010e9e1fbd57e96faf8ce91092ad4ca94ff61f26342de113152e8e890e24a808376aef4453a9f99c5d96710e0fad26e39f21bf
   languageName: node
   linkType: hard
 
