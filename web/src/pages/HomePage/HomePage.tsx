@@ -33,8 +33,15 @@ class HomePage extends Component<{}, HomePageState> {
     this.handleFieldChange = this.handleFieldChange.bind(this)
   }
 
+  componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<HomePageState>, snapshot?: any): void {
+
+  }
 
   handleYesClick() {
+    navigate(routes.upload())
+
+    location.reload();
+
     const extraField = document.getElementById('extraField')
     extraField.classList.toggle('hidden') // Toggle the 'hidden' class to show or hide the input
   }
