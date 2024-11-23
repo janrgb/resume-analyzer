@@ -22,9 +22,11 @@ p{
   font-size: 30px;
 }
 
+
 .signup{
   margin-top: 20px;
 }
+
 
 /* Button Styling */
 .button {
@@ -40,11 +42,13 @@ p{
   transition: all 0.3s ease;             /* Smooth transition for hover effects */
 }
 
+
 .button:hover {
   background: linear-gradient(145deg, #5560ea, #6e7dff); /* Reversed gradient for hover */
   box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2); /* Bigger shadow on hover */
   transform: translateY(-3px);              /* Slightly lifts the button */
 }
+
 
 .button:active {
   transform: translateY(1px); /* Button sinks down slightly when clicked */
@@ -52,9 +56,12 @@ p{
 }
 
 
+
+
 .separator{
   height: 20px;
 }
+
 
 .signup{
   display: flex;
