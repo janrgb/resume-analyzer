@@ -20,6 +20,6 @@ export const schema = gql`
   union LoginResponse = Token | Error
 
   type Mutation {
-    loginUser(input: LoginUser!): LoginResponse!
+    loginUser(input: LoginUser!): LoginResponse! @requireAuth
   }
 `

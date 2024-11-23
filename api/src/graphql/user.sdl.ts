@@ -17,6 +17,6 @@ export const schema = gql`
   }
 
   type Mutation {
-    registerUser(input: RegisterUser!): Response!
+    registerUser(input: RegisterUser!): Response! @skipAuth
   }
 `
