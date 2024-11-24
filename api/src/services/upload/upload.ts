@@ -1,6 +1,4 @@
 import type { MutationResolvers } from 'types/graphql'
-import { createWriteStream, createReadStream } from 'fs'
-import path from 'path'
 
 export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input }) => {
   const { filename, mimetype, createReadStream } = input

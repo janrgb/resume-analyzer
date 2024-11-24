@@ -2,7 +2,6 @@ import fs from 'fs'
 import path from 'path'
 import { resumeUpload } from './upload'  // The upload function you want to test
 import mime from 'mime-types'
-import { InvalidTokenError } from 'jwt-decode'
 
 const validFile = path.join(__dirname, 'Elective_Stats.pdf')
 const invalidFile = path.join(__dirname, 'bosch.pdf')
