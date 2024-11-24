@@ -21,25 +21,41 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
   }
 
   let totalBytes = 0
-  stream.on('data', (chunk) => {
-    totalBytes += chunk.length
-    if (totalBytes > MAX_FILE_SIZE) {
-      stream.destroy()
-      return {
-        status: 'error',
-        error: 'File size exceeds maximum limit of 2MB.'
+  let fileTooLarge = false
+
+  // Read the stream and calculate the size
+  const sizeCheckPromise = new Promise<void>((resolve, reject) => {
+    stream.on('data', (chunk) => {
+      totalBytes += chunk.length
+      // console.log("totalBytes: ", totalBytes)
+
+      // If size exceeds, destroy stream and mark as too large
+      if (totalBytes > MAX_FILE_SIZE) {
+        fileTooLarge = true
+        stream.destroy() // Stop reading further
+        resolve() // End the promise successfully
       }
-    }
+    })
+
+    stream.on('end', () => resolve())
+    stream.on('error', (err) => reject(err))
   })
 
-  // Store it.
-  const savePath = path.join(__dirname, '../../uploads', filename)
-  await new Promise((resolve, reject) => {
-    const writeStream = createWriteStream(savePath)
-    stream.pipe(writeStream)
-    stream.on('error', reject)
-    stream.on('close', resolve)
-  })
+  // Wait for the size check to complete
+  await sizeCheckPromise
+
+  // Return error if file was too large
+  if (fileTooLarge) {
+    return {
+      status: 'error',
+      error: 'File size exceeds maximum limit of 2MB.'
+    }
+  }
+
+  // If we reach here, file size is valid
+  console.log("Name: ", filename)
+  console.log("Mimetype: ", mimetype)
+  console.log("Size: ", totalBytes)
 
   return {
     message: "Resume uploaded successfully.",
