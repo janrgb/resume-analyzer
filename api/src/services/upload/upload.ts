@@ -1,5 +1,5 @@
 import type { MutationResolvers } from 'types/graphql'
-import { createWriteStream } from 'fs'
+import { createWriteStream, createReadStream } from 'fs'
 import path from 'path'
 
 export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input }) => {
@@ -17,11 +17,20 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
   // Validate file size.
   const MAX_FILE_SIZE = 2 * 1024 * 1024
   const stream = createReadStream()
+  if (!stream || typeof stream.pipe !== 'function'){
+    throw new Error('Invalid stream returned by createReadStream.')
+  }
+
   let totalBytes = 0
   stream.on('data', (chunk) => {
     totalBytes += chunk.length
     if (totalBytes > MAX_FILE_SIZE) {
       stream.destroy()
+      return {
+        message: null,
+        status: 'error',
+        error: 'File size exceeds maximum limit of 2MB.'
+      }
     }
   })
 
