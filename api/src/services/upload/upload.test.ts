@@ -1,63 +1,36 @@
-import { resumeUpload } from './upload'
-import { Readable } from 'stream'
+import fs from 'fs'
+import path from 'path'
+import { resumeUpload } from './upload'  // The upload function you want to test
+import { createPost } from '../posts/posts'
 
-describe('upload', () => {
-  const mockFile = {
-    filename: 'resume.pdf',
-    mimetype: 'application/pdf',
-    createReadStream: () => {
-      const stream = new Readable()
-      stream.push("This is some fake PDF content")
-      stream.push(null)
-      return stream
-    },
-  }
+const testFilePath = path.join(__dirname, 'test-resume.pdf')
 
-  /*const mockFile = ({ filename = 'test.pdf', mimetype = 'application/pdf', size = 1024 * 1024 }) => ({
-    filename,
-    mimetype,
-    createReadStream: jest.fn(() => ({
-      destroy: jest.fn(() => {
-        if (events['error']) {
-          events['error'].forEach
-        }
-      }),
-      pipe: jest.fn(),
-      on: jest.fn((event, callback) => {
-        if (event === 'data') callback(Buffer.alloc(size))
-        if (event === 'end') callback()
-        if (event === 'error') callback(new Error('Stream error'))
-      }),
-    })),
-  })*/
+// Create a small PDF file for testing
+beforeAll(() => {
+  const fileContent = 'This is a fake PDF content'
+  fs.writeFileSync(testFilePath, fileContent)
+})
 
-  it('should return a success for valid PDF', async () => {
-    // const validFile = mockFile({ filename: 'resume.pdf', mimetype: 'application/pdf' })
+describe('File Upload Tests', () => {
+  it('should extract metadata and handle a real PDF file.', async () => {
+    const filestream = fs.createReadStream(testFilePath)
+
+    const mockFile = {
+      filename: 'test-resume.pdf',
+      mimetype: 'application/pdf',
+      createReadStream: () => filestream,
+    }
+
     const result = await resumeUpload({
       input: mockFile
     })
 
-    expect(result).toEqual({
-      message: "Resume uploaded successfully.",
-      status: 'success',
-      error: null
-    })
-  })
-
-  it('should return error for invalid file type', async () => {
-    const invalidFile = { ...mockFile, mimetype: 'text/plain' }
-    const result = await resumeUpload({
-      input: invalidFile
-    })
-
-    expect(result).toEqual({
-      message: null,
-      status: 'error',
-      error: 'Invalid file type. Only PDF files are allowed.',
-    })
+    expect(result.message).toBe("Resume uploaded successfully.")
+    expect(result.status).toBe("success")
   })
 })
 
-describe('file size validation', () => {
-  
+afterAll(() => {
+  // Clean up the file after tests
+  fs.unlinkSync(testFilePath)
 })

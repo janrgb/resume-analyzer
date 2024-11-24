@@ -8,7 +8,6 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
   // Validate file type.
   if (mimetype !== 'application/pdf') {
     return {
-      message: null,
       status: 'error',
       error: 'Invalid file type. Only PDF files are allowed.'
     }
@@ -27,7 +26,6 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
     if (totalBytes > MAX_FILE_SIZE) {
       stream.destroy()
       return {
-        message: null,
         status: 'error',
         error: 'File size exceeds maximum limit of 2MB.'
       }
@@ -46,6 +44,5 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
   return {
     message: "Resume uploaded successfully.",
     status: "success",
-    error: null,
   }
 }
