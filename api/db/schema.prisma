@@ -23,8 +23,15 @@ generator client {
 //   name  String?
 // }
 model Post {
-  id          Int     @id @default(autoincrement())
-  title       String
+  id        Int      @id @default(autoincrement())
+  title     String
   body      String
   createdAt DateTime @default(now())
 }
+
+//model User {
+//  email    String @id
+//  password String
+//  username String
+//  createdAt DateTime @default(now())
+//}
