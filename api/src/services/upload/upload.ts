@@ -1,3 +1,4 @@
+import { extractTextFromPDF } from 'src/lib/pdfUtils'
 import type { MutationResolvers } from 'types/graphql'
 
 export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input }) => {
@@ -23,13 +24,18 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
     }
   }
 
-  // If we reach here, file size is valid
-  console.log("Name: ", name)
-  console.log("Mimetype: ", type)
-  console.log("Size: ", size)
+  // Extract text from the PDF.
+  try {
+    const text = await extractTextFromPDF(input)
 
-  return {
-    message: "Resume uploaded successfully.",
-    status: "success",
+    return {
+      message: 'Resume uploaded successfully.',
+      status: 'success'
+    }
+  } catch (error) {
+    return {
+      status: 'error',
+      error: 'Failed to process the PDF. Please try again.'
+    }
   }
 }

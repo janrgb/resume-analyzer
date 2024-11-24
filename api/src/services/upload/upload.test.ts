@@ -3,14 +3,14 @@ import path from 'path'
 import { resumeUpload } from './upload'  // The upload function you want to test
 import mime from 'mime-types'
 
-const validFile = path.join(__dirname, 'Elective_Stats.pdf')
+const validFile = path.join(__dirname, 'test.pdf')
 const invalidFile = path.join(__dirname, 'bosch.pdf')
 const superInvalidFile = path.join(__dirname, 'guh.png')
 
 describe('File Upload Tests', () => {
   it('should extract metadata and handle a real PDF file.', async () => {
     // Create a file mockup.
-    const realFile = new File([fs.readFileSync(validFile)], 'Elective_Stats.pdf', { type: mime.lookup(validFile).toString() })
+    const realFile = new File([fs.readFileSync(validFile)], 'test.pdf', { type: mime.lookup(validFile).toString() })
 
     const result = await resumeUpload({
       input: realFile
