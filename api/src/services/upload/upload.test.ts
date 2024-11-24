@@ -9,15 +9,11 @@ const superInvalidFile = path.join(__dirname, 'guh.png')
 
 describe('File Upload Tests', () => {
   it('should extract metadata and handle a real PDF file.', async () => {
-    const filestream = fs.createReadStream(validFile)
-    const mockFile = {
-      filename: path.basename(validFile),
-      mimetype: mime.lookup(validFile),
-      createReadStream: () => filestream,
-    }
+    // Create a file mockup.
+    const realFile = new File([fs.readFileSync(validFile)], 'Elective_Stats.pdf', { type: mime.lookup(validFile).toString() })
 
     const result = await resumeUpload({
-      input: mockFile
+      input: realFile
     })
 
     expect(result.message).toBe("Resume uploaded successfully.")
@@ -25,31 +21,22 @@ describe('File Upload Tests', () => {
   })
 
   it('should fail because size is too large', async () => {
-    const filestream = fs.createReadStream(invalidFile)
-    const mockFile = {
-      filename: path.basename(invalidFile),
-      mimetype: mime.lookup(invalidFile),
-      createReadStream: () => filestream,
-    }
-
+    const realFile = new File([fs.readFileSync(invalidFile)], 'bosch.pdf', { type: mime.lookup(invalidFile).toString() })
     const result = await resumeUpload({
-      input: mockFile
+      input: realFile
     })
 
-    expect(result.error).toBe("File size exceeds maximum limit of 2MB.")
+    expect(result.error).toBe("File exceeds maximum limit of 2MB.")
     expect(result.status).toBe("error")
   })
 
   it('should fail because file type is not pdf', async () => {
-    const filestream = fs.createReadStream(superInvalidFile)
-    const mockFile = {
-      filename: path.basename(superInvalidFile),
-      mimetype: mime.lookup(superInvalidFile),
-      createReadStream: () => filestream,
-    }
-
+    const realFile = new File([fs.readFileSync(superInvalidFile)], 'guh.png', { type: mime.lookup(superInvalidFile).toString() })
     const result = await resumeUpload({
-      input: mockFile
+      input: realFile
     })
+
+    expect(result.error).toBe("Invalid file type. Only PDF files are allowed.")
+    expect(result.status).toBe("error")
   })
 })

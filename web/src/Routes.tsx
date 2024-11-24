@@ -14,6 +14,7 @@ import ScaffoldLayout from 'src/layouts/ScaffoldLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/resume-upload" page={ResumeUploadPage} name="resumeUpload" />
       <Route path="/dashboard" page={DashboardPage} name="dashboard" />
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/sign-up" page={SignUpPage} name="signUp" />

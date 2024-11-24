@@ -1,5 +1,4 @@
 export const schema = gql`
-  scalar Upload
 
   type UploadResponse {
     message: String
@@ -8,6 +7,6 @@ export const schema = gql`
   }
 
   type Mutation {
-    resumeUpload(input: Upload!): UploadResponse! @requireAuth
+    resumeUpload(input: File!): UploadResponse! @requireAuth
   }
 `
