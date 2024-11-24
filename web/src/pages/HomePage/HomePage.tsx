@@ -29,7 +29,6 @@ class HomePage extends Component<{}, HomePageState> {
     // Bind event handler methods to this
     this.handleYesClick = this.handleYesClick.bind(this)
     this.handleLoginClick = this.handleLoginClick.bind(this)
-    this.handleSignUpClick = this.handleSignUpClick.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
   }
 
@@ -38,7 +37,7 @@ class HomePage extends Component<{}, HomePageState> {
   }
 
   handleYesClick() {
-    navigate(routes.upload())
+    navigate(routes.register())
 
     location.reload();
 
@@ -108,79 +107,6 @@ class HomePage extends Component<{}, HomePageState> {
 }
 
 
-
-
-  async handleSignUpClick() {
-
-    const { email, username, password, confirmPassword } = this.state;
-
-
-    if (!email || !username || !password || !confirmPassword) {
-        alert('Missing data');
-        return;
-    }
-
-
-    if (password !== confirmPassword) {
-        alert('Passwords do not match.');
-        return;
-    }
-
-
-    const url = '*OUR GRAPHQL REGISTER POST ENDPOINT URL*';
-
-
-    interface GraphQLResponse {
-        data?: {
-            message: string;
-        };
-        errors?: any; // Adjust based on expected error structure.
-    }
-
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                query: `
-                    mutation {
-                        register(email: "${email}", password: "${password}", username: "${username}") {
-                            message
-                        }
-                    }
-                `,
-            }),
-        });
-
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-
-        const responseData: GraphQLResponse = await response.json();
-
-
-        if (responseData.data && responseData.data.message === 'User registered') {
-
-
-          alert(`Welcome ${username}!`);
-        } else {
-            const errorMessage = responseData.errors?.[0]?.message || 'There has been an issue. Please try again later.';
-            alert(errorMessage);
-        }
-    } catch (error) {
-        console.error('Error during registration:', error);
-        alert('An error occurred. Please check your internet connection and try again.');
-    }
-}
-
-
-
-
   // Generic field change handler
   handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target // Get name and value from the input
@@ -211,6 +137,7 @@ class HomePage extends Component<{}, HomePageState> {
           placeholder="Password"
           onChange={this.handleFieldChange}
         />
+        <div className='separator'></div>
         <button
           type="button"
           className="button"
@@ -222,56 +149,6 @@ class HomePage extends Component<{}, HomePageState> {
         <button type="button" className="button" onClick={this.handleYesClick}>
           New User?
         </button>
-
-
-        <div id="extraField" className="hidden">
-          <div className="signup">
-            <p className="subtext">Sign Up</p>
-            <input
-              type="text"
-              id="SignUpEmail"
-              name="email"
-              className="field"
-              placeholder="Email"
-              onChange={this.handleFieldChange}
-            />
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="field"
-              placeholder="Username"
-              onChange={this.handleFieldChange}
-            />
-            <input
-              type="password"
-              id="SignUpPassword"
-              name="password"
-              className="field"
-              placeholder="Password"
-              onChange={this.handleFieldChange}
-            />
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              className="field"
-              placeholder="Confirm Password"
-              onChange={this.handleFieldChange}
-            />
-
-
-            <button
-              type="button"
-              className="button"
-              onClick={this.handleSignUpClick}
-            >
-              Sign Up
-            </button>
-          </div>
-        </div>
-
-
       </div>
     )
   }

@@ -14,6 +14,7 @@ import HomePage from './pages/HomePage/HomePage'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/register" page={RegisterPage} name="register" />
       <Route path="/" page={HomePage} name="home" />
       <Route path="/upload" page={UploadPage} name="upload" />
     </Router>
