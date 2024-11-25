@@ -28,10 +28,3 @@ model Post {
   body      String
   createdAt DateTime @default(now())
 }
-
-//model User {
-//  email    String @id
-//  password String
-//  username String
-//  createdAt DateTime @default(now())
-//}
