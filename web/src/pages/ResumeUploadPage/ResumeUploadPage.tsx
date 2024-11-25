@@ -2,7 +2,7 @@ import { Metadata, useMutation } from '@redwoodjs/web'
 import { Label, Form, FileField, FieldError, TextAreaField, Submit, SubmitHandler } from '@redwoodjs/forms'
 import PrivateRoute from 'src/components/PrivateRoute'
 import './ResumeUploadPage.css'
-import { useState } from 'react'
+import { isValidElement, useState } from 'react'
 
 const UPLOAD_RESUME = gql`
   mutation ResumeUploadMutation ($input: File!) {
@@ -66,6 +66,7 @@ const ResumeUploadPage = () => {
   })
 
   // File upload validation state.
+  const [isFileValid, setIsFileValid] = useState(false)
   const [fileError, setFileError] = useState<string | null>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,15 +74,22 @@ const ResumeUploadPage = () => {
     if (file) {
       if (file.type !== 'application/pdf') {
         setFileError('Only PDF files are allowed.')
+        setIsFileValid(false)
       } else if (file.size > MAX_FILE_SIZE) {
         setFileError('File size exceeds the 2MB limit.')
+        setIsFileValid(false)
       } else {
         setFileError(null)
+        setIsFileValid(true)
       }
+    } else {
+      setFileError('No file selected.')
+      setIsFileValid(false)
     }
   }
 
   // Job description validation state.
+  const [isJobDescriptionValid, setIsJobDescriptionValid] = useState(true)
   const [jobDescriptionError, setJobDescriptionError] = useState<string | null>(null)
   const [jobDescription, setJobDescription] = useState('')
 
@@ -91,12 +99,19 @@ const ResumeUploadPage = () => {
 
     if (value.length > MAX_CHAR_COUNT) {
       setJobDescriptionError('Job description exceeds the 5000 character limit!')
+      setIsJobDescriptionValid(false)
     } else {
       setJobDescriptionError(null)
+      setIsJobDescriptionValid(true)
     }
   }
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if(!isValidElement || !isJobDescriptionValid) {
+      alert("Please fix the errors before submitting.")
+      return
+    }
+
     try {
       // Get file metadata.
       if (data.resume?.length > 0) {
@@ -105,7 +120,7 @@ const ResumeUploadPage = () => {
         console.log(file.size)
         console.log(file.name)
 
-        // Send an uploadResume mutation.
+        // Send an resumeUpload mutation.
         await resumeUpload({
           variables: {
             input: file
@@ -113,16 +128,14 @@ const ResumeUploadPage = () => {
         })
       }
 
-      if (jobDescription) {
-        console.log("what")
-        await uploadDescription({
-          variables: {
-            input: {
-              content: jobDescription
-            }
+      // Send a uploadDescription mutation.
+      await uploadDescription({
+        variables: {
+          input: {
+            content: jobDescription
           }
-        })
-      }
+        }
+      })
     } catch (error) {
       console.error("Error during submission:", error)
       alert('An error occurred during submission.')
@@ -148,7 +161,7 @@ const ResumeUploadPage = () => {
             value={jobDescription}
             onChange={handleJobDescriptionChange}
             maxLength={5000}
-            validation={{ required: true }}
+            validation={{ required: false }}
             errorClassName="error-field"
           />
           <FieldError name="job description" className="error" />
@@ -158,7 +171,7 @@ const ResumeUploadPage = () => {
             {MAX_CHAR_COUNT - jobDescription.length} characters remaining
           </p>
 
-          <Submit className="button">Upload</Submit>
+          <Submit className="button" disabled={!isFileValid || !isJobDescriptionValid}>Upload</Submit>
         </Form>
       </PrivateRoute>
     </div>
