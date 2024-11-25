@@ -25,10 +25,5 @@ export const schema = gql`
     createPost(input: CreatePostInput!): Post! @requireAuth
     updatePost(id: Int!, input: UpdatePostInput!): Post! @requireAuth
     deletePost(id: Int!): Post! @requireAuth
-    signup(email: String!, password: String!, username: String!): SignupResponse!
-  }
-
-  type SignupResponse {
-    message: String!
   }
 `
