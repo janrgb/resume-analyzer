@@ -31,7 +31,7 @@ const LoginPage = () => {
       setLoading(false)
       if (data.loginUser.token) {
         localStorage.setItem('token', data.loginUser.token)
-        navigate('/upload')
+        navigate('/resume-upload')
       } else {
         alert(data.loginUser.message)
       }
