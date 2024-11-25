@@ -5,13 +5,17 @@ import {
   TextField,
   Label,
   FieldError,
+  PasswordField,
   Submit,
   SubmitHandler,
 } from '@redwoodjs/forms'
+import './RegisterPage.css'
+import { navigate } from '@redwoodjs/router'
 
 const REGISTER_USER = gql`
   mutation RegisterUserMutation ($input: RegisterUser!) {
     registerUser(input: $input) {
+      code,
       message
     }
   }
@@ -24,15 +28,16 @@ interface FormValues {
   username: String
 }
 
-const SignUpPage = () => {
+const RegisterPage = () => {
   const [registerUser] = useMutation(REGISTER_USER, {
     onCompleted: (data) => {
       const { code, message } = data.registerUser
-
       if (code === 201){
         // Success
+        console.log("here")
         alert(message)
       } else {
+        console.log("here")
         alert(`Error: ${message}`)
       }
     },
@@ -42,7 +47,7 @@ const SignUpPage = () => {
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    if (data.password !== data.confirmpass){
+    if (data.password !== data['confirm password']){
       alert('Passwords do not match!')
       return
     }
@@ -60,9 +65,9 @@ const SignUpPage = () => {
   }
 
   return (
-    <>
-      <Metadata title="SignUp" description="SignUp page" />
-      <h1>Sign Up</h1>
+    <div className="home">
+      <Metadata title="Register" description="Register page" />
+      <h1 className="title">Ready to Start Acing Your Applications?</h1>
       <br></br>
       <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
         <Label name="username" errorClassName="error">
@@ -71,7 +76,8 @@ const SignUpPage = () => {
         <TextField
           name="username"
           validation={{required : true}}
-          errorClassName="error"
+          errorClassName="error-field"
+          className="field"
         />
         <FieldError name="username" className="error" />
         <Label name="email" errorClassName="error">
@@ -79,33 +85,44 @@ const SignUpPage = () => {
         </Label>
         <TextField
           name="email"
-          validation={{required : true}}
-          errorClassName="error"
+          validation={{ required : true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ }}
+          errorClassName="error-field"
+          className="field"
         />
         <FieldError name="email" className="error" />
         <Label name="password" errorClassName="error">
           Password
         </Label>
-        <TextField
+        <PasswordField
           name="password"
-          validation={{required : true}}
-          errorClassName="error"
+          validation={{ required : true }}
+          errorClassName="error-field"
+          className="field"
         />
         <FieldError name="password" className="error" />
-        <Label name="confirmpass" errorClassName="error">
+        <Label name="confirm password" errorClassName="error">
           Confirm Password
         </Label>
-        <TextField
-          name="confirmpass"
-          validation={{required: true}}
-          errorClassName="error"
+        <PasswordField
+          name="confirm password"
+          validation={{ required: true }}
+          errorClassName="error-field"
+          className="field"
         />
-        <FieldError name="confirmpass" className="error" />
-
-        <Submit>Sign Up</Submit>
+        <FieldError name="confirm password" className="error" />
+        <div className="separator"></div>
+        <Submit className="button">Sign Up</Submit>
+        <div className="separator"></div>
+        <button
+          type="button"
+          className="button"
+          onClick={() => navigate('/')}
+        >
+        Returning User?
+        </button>
       </Form>
-    </>
+    </div>
   )
 }
 
-export default SignUpPage
+export default RegisterPage

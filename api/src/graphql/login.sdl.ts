@@ -1,4 +1,3 @@
-/* userlogin.sdl.ts */
 export const schema = gql`
   type LoggingUser {
     email: String!

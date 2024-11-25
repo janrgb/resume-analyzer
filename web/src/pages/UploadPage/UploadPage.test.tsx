@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import SignUpPage from './SignUpPage'
+import UploadPage from './UploadPage'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //   https://redwoodjs.com/docs/testing#testing-pages-layouts
 
-describe('SignUpPage', () => {
+describe('UploadPage', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<SignUpPage />)
+      render(<UploadPage />)
     }).not.toThrow()
   })
 })
