@@ -9,21 +9,17 @@
 
 import { Set, Router, Route} from '@redwoodjs/router'
 import UploadPage from './pages/UploadPage/UploadPage'
-import ScaffoldLayout from './layouts/ScaffoldLayout/ScaffoldLayout'
+import MainLayout from './layouts/MainLayout/MainLayout'
+import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 
 const Routes = () => {
   return (
     <Router>
-      <Route path="/register" page={RegisterPage} name="register" />
-      <Route path="/" page={LoginPage} name="home" />
-      <Route path="/upload" page={UploadPage} name="upload" />
-      <Route path="/resume-upload" page={ResumeUploadPage} name="resumeUpload" />
-      <Route path="/dashboard" page={DashboardPage} name="dashboard" />
-      <Set wrap={ScaffoldLayout} title="Posts" titleTo="posts" buttonLabel="New Post" buttonTo="newPost">
-        <Route path="/posts/new" page={PostNewPostPage} name="newPost" />
-        <Route path="/posts/{id:Int}/edit" page={PostEditPostPage} name="editPost" />
-        <Route path="/posts/{id:Int}" page={PostPostPage} name="post" />
-        <Route path="/posts" page={PostPostsPage} name="posts" />
+      <Set wrap={MainLayout}>
+        <Route path="/" page={RegisterPage} name="register" />
+        <Route path="/login" page={LoginPage} name="login" />
+        <Route path="/resume-upload" page={ResumeUploadPage} name="resumeUpload" />
+        <Route path="/dashboard" page={DashboardPage} name="dashboard" />
       </Set>
       <Route notfound page={NotFoundPage} />
     </Router>
