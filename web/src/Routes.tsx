@@ -9,7 +9,6 @@
 
 import { Set, Router, Route} from '@redwoodjs/router'
 import UploadPage from './pages/UploadPage/UploadPage'
-import LoginPage from './pages/LoginPage/LoginPage'
 import ScaffoldLayout from './layouts/ScaffoldLayout/ScaffoldLayout'
 
 const Routes = () => {
@@ -20,7 +19,6 @@ const Routes = () => {
       <Route path="/upload" page={UploadPage} name="upload" />
       <Route path="/resume-upload" page={ResumeUploadPage} name="resumeUpload" />
       <Route path="/dashboard" page={DashboardPage} name="dashboard" />
-      <Route path="/sign-up" page={SignUpPage} name="signUp" />
       <Set wrap={ScaffoldLayout} title="Posts" titleTo="posts" buttonLabel="New Post" buttonTo="newPost">
         <Route path="/posts/new" page={PostNewPostPage} name="newPost" />
         <Route path="/posts/{id:Int}/edit" page={PostEditPostPage} name="editPost" />

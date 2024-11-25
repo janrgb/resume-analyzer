@@ -1,184 +1,120 @@
-import React from 'react'
-import { Component } from 'react'
+// import { Link, routes } from '@redwoodjs/router'
+import { Metadata, useMutation } from '@redwoodjs/web'
+import {
+  Form,
+  TextField,
+  Label,
+  FieldError,
+  PasswordField,
+  Submit,
+  SubmitHandler,
+} from '@redwoodjs/forms'
 import './RegisterPage.css'
-import { Link, routes } from '@redwoodjs/router'
-import { navigate } from '@redwoodjs/router/dist/cjs/history'
 
+const REGISTER_USER = gql`
+  mutation RegisterUserMutation ($input: RegisterUser!) {
+    registerUser(input: $input) {
+      code,
+      message
+    }
+  }
+`
 
-interface RegisterPageState {
-  email: string
-  username: string
-  password: string
-  confirmPassword: string
+interface FormValues {
+  email: String
+  password: String
+  confirmpass: String
+  username: String
 }
 
+const RegisterPage = () => {
+  const [registerUser] = useMutation(REGISTER_USER, {
+    onCompleted: (data) => {
+      const { code, message } = data.registerUser
+      if (code === 201){
+        // Success
+        console.log("here")
+        alert(message)
+      } else {
+        console.log("here")
+        alert(`Error: ${message}`)
+      }
+    },
+    onError: (error) => {
+      alert(`Unexpected Error: ${error.message}`)
+    }
+  })
 
-class HomePage extends Component<{}, RegisterPageState> {
-  constructor(props: {}) {
-    super(props)
-
-
-    this.state = {
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    if (data.password !== data['confirm password']){
+      alert('Passwords do not match!')
+      return
     }
 
-
-    // Bind event handler methods to this
-    this.handleYesClick = this.handleYesClick.bind(this)
-    this.handleSignUpClick = this.handleSignUpClick.bind(this)
-    this.handleFieldChange = this.handleFieldChange.bind(this)
+    // Send a registerUser mutation.
+    registerUser({
+      variables: {
+        input: {
+          email: data.email,
+          username: data.username,
+          password: data.password,
+        },
+      },
+    })
   }
 
-
-  handleYesClick() {
-    navigate(routes.upload())
-
-    location.reload();
-
-  }
-
-  async handleSignUpClick() {
-
-    navigate(routes.register())
-    location.reload();
-
-    const { email, username, password, confirmPassword } = this.state;
-
-
-    if (!email || !username || !password || !confirmPassword) {
-        alert('Missing data');
-        return;
-    }
-
-
-    if (password !== confirmPassword) {
-        alert('Passwords do not match.');
-        return;
-    }
-
-
-    const url = '*OUR GRAPHQL REGISTER POST ENDPOINT URL*';
-
-
-    interface GraphQLResponse {
-        data?: {
-            message: string;
-        };
-        errors?: any; // Adjust based on expected error structure.
-    }
-
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                query: `
-                    mutation {
-                        register(email: "${email}", password: "${password}", username: "${username}") {
-                            message
-                        }
-                    }
-                `,
-            }),
-        });
-
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-
-        const responseData: GraphQLResponse = await response.json();
-
-
-        if (responseData.data && responseData.data.message === 'User registered') {
-
-
-          alert(`Welcome ${username}!`);
-        } else {
-            const errorMessage = responseData.errors?.[0]?.message || 'There has been an issue. Please try again later.';
-            alert(errorMessage);
-        }
-    } catch (error) {
-        console.error('Error during registration:', error);
-        alert('An error occurred. Please check your internet connection and try again.');
-    }
+  return (
+    <div className="home">
+      <Metadata title="Register" description="Register page" />
+      <h1 className="title">Ready to Start Acing Your Applications?</h1>
+      <br></br>
+      <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
+        <Label name="username" errorClassName="error">
+          Username
+        </Label>
+        <TextField
+          name="username"
+          validation={{required : true}}
+          errorClassName="error-field"
+          className="field"
+        />
+        <FieldError name="username" className="error" />
+        <Label name="email" errorClassName="error">
+          Email
+        </Label>
+        <TextField
+          name="email"
+          validation={{ required : true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ }}
+          errorClassName="error-field"
+          className="field"
+        />
+        <FieldError name="email" className="error" />
+        <Label name="password" errorClassName="error">
+          Password
+        </Label>
+        <PasswordField
+          name="password"
+          validation={{ required : true }}
+          errorClassName="error-field"
+          className="field"
+        />
+        <FieldError name="password" className="error" />
+        <Label name="confirm password" errorClassName="error">
+          Confirm Password
+        </Label>
+        <PasswordField
+          name="confirm password"
+          validation={{ required: true }}
+          errorClassName="error-field"
+          className="field"
+        />
+        <FieldError name="confirm password" className="error" />
+        <div className="separator"></div>
+        <Submit className="button">Sign Up</Submit>
+        <div className="separator"></div>
+      </Form>
+    </div>
+  )
 }
 
-
-
-
-  // Generic field change handler
-  handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target // Get name and value from the input
-    this.setState({
-      [name]: value, // Dynamically update the state based on the input's name
-    } as Pick<RegisterPageState, keyof RegisterPageState>)
-  }
-
-
-  render(): React.ReactNode {
-    return (
-      <div className="home">
-
-        <div id="extraField">
-          <div className="signup">
-
-            <p className="subtext">Sign Up</p>
-            <input
-              type="text"
-              id="SignUpEmail"
-              name="email"
-              className="field"
-              placeholder="Email"
-              onChange={this.handleFieldChange}
-            />
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="field"
-              placeholder="Username"
-              onChange={this.handleFieldChange}
-            />
-            <input
-              type="password"
-              id="SignUpPassword"
-              name="password"
-              className="field"
-              placeholder="Password"
-              onChange={this.handleFieldChange}
-            />
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              className="field"
-              placeholder="Confirm Password"
-              onChange={this.handleFieldChange}
-            />
-            <div className='separator'></div>
-            <button
-              type="button"
-              className="button"
-              onClick={this.handleSignUpClick}
-            >
-              Sign Up
-            </button>
-          </div>
-        </div>
-
-
-      </div>
-    )
-  }
-}
-
-
-export default HomePage
+export default RegisterPage
