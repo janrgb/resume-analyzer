@@ -8,17 +8,13 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Set, Router, Route} from '@redwoodjs/router'
-import UploadPage from './pages/UploadPage/UploadPage'
 import MainLayout from './layouts/MainLayout/MainLayout'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+import ScaffoldLayout from './layouts/ScaffoldLayout/ScaffoldLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Route path="/test-image-p-age" page={TestImagePAgePage} name="testImagePAge" />
-      <Set wrap={ScaffoldLayout} title="Posts" titleTo="posts" buttonLabel="New Post" buttonTo="newPost">
-        <Route path="/dashboard" page={DashboardPage} name="dashboard" />
-      </Set>
       <Set wrap={MainLayout}>
         <Route path="/" page={RegisterPage} name="register" />
         <Route path="/login" page={LoginPage} name="login" />
