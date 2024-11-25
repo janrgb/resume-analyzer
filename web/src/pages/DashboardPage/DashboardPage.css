@@ -2,8 +2,6 @@
 
 /* General Styles */
 .dashboard-container {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     padding-top: 20px;
     background-color: paleturquoise;

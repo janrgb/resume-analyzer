@@ -65,7 +65,7 @@ const SpinnerAPI = ({ onDataFetched }: SpinnerAPIProps) => {
 };
 
 export default SpinnerAPI;
-*/
+
 import { useState, useEffect } from 'react'
 import Spinner from 'src/components/Spinner/Spinner'
 
@@ -103,4 +103,4 @@ const SpinnerAPI = ({
   return null
 }
 
-export default SpinnerAPI
+export default SpinnerAPI*/
