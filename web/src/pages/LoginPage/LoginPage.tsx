@@ -80,7 +80,7 @@ const LoginPage = () => {
         </div>
 
         <div className="separator"></div>
-        <Submit className="button">Login</Submit>
+        <Submit className="button">Log In</Submit>
         <div className="separator"></div>
         <button
           type="button"

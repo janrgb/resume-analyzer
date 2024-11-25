@@ -10,6 +10,7 @@ import {
   SubmitHandler,
 } from '@redwoodjs/forms'
 import './RegisterPage.css'
+import { navigate } from '@redwoodjs/router'
 
 const REGISTER_USER = gql`
   mutation RegisterUserMutation ($input: RegisterUser!) {
@@ -112,6 +113,13 @@ const RegisterPage = () => {
         <div className="separator"></div>
         <Submit className="button">Sign Up</Submit>
         <div className="separator"></div>
+        <button
+          type="button"
+          className="button"
+          onClick={() => navigate('/')}
+        >
+        Returning User?
+        </button>
       </Form>
     </div>
   )
