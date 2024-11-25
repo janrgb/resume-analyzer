@@ -8,9 +8,9 @@
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
 import { Set, Router, Route} from '@redwoodjs/router'
-import UploadPage from './pages/UploadPage/UploadPage'
 import MainLayout from './layouts/MainLayout/MainLayout'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+import ScaffoldLayout from './layouts/ScaffoldLayout/ScaffoldLayout'
 
 const Routes = () => {
   return (
