@@ -13,11 +13,39 @@ p{
   background-color: paleturquoise;
   height: 1080px;
 }
+
 .field{
   padding: 10px;
   margin: 5px;
   border-radius: 15px;
+  border: 1px solid #ccc; /* Regular border color */
+  font-size: 16px; /* Consistent font size */
+  transition: border-color 0.3s ease; /* Smooth transition for border color */
 }
+
+.error-field{
+  padding: 10px;
+  margin: 5px;
+  border-radius: 15px;
+  border: 1px solid red; /* Regular border color */
+  font-size: 16px; /* Consistent font size */
+  transition: border-color 0.3s ease; /* Smooth transition for border color */
+}
+
+.input-wrapper.error {
+  border-color: red;
+}
+
+.input-wrapper.error .field:focus {
+  border-color: darkred;
+}
+
+.error-text{
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 .subtext{
   font-size: 30px;
 }
@@ -40,6 +68,7 @@ p{
   cursor: pointer;                      /* Pointer cursor on hover */
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
   transition: all 0.3s ease;             /* Smooth transition for hover effects */
+  margin: auto
 }
 
 
@@ -55,13 +84,9 @@ p{
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1); /* Reset shadow */
 }
 
-
-
-
 .separator{
   height: 20px;
 }
-
 
 .signup{
   display: flex;

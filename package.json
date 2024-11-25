@@ -31,10 +31,10 @@
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
-    "react-router-dom": "^7.0.1"
     "api": "workspace:^",
     "bcrypt": "^5.1.1",
     "jsonwebtoken": "^9.0.2",
+    "react-router-dom": "^7.0.1",
     "workspace": "^0.0.1-preview.1"
   }
 }
