@@ -51,7 +51,7 @@ input[type="file"]:focus, textarea:focus {
 }
 
 /* Error handling */
-.error {
+.error-field-resume {
   color: red;
   font-size: 0.875rem;
   margin-top: 0.25rem;

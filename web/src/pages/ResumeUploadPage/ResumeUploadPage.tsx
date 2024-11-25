@@ -153,7 +153,7 @@ const ResumeUploadPage = () => {
             Upload Resume (PDF Only - 2MB limit)
           </Label>
           <FileField name="resume" accept=".pdf" validation={{ required: true }} errorClassName="error-field" onChange={handleFileChange}/>
-          <FieldError name="resume" className="error" />
+          <FieldError name="resume" className="error-field-resume" />
           {fileError && <div className="error">{fileError}</div>}
           <Label name="job description" errorClassName="error-label">Job Description (Max 5000 characters)</Label>
           <TextAreaField
@@ -164,7 +164,7 @@ const ResumeUploadPage = () => {
             validation={{ required: false }}
             errorClassName="error-field"
           />
-          <FieldError name="job description" className="error" />
+          <FieldError name="job description" className="error-field-resume" />
           {jobDescriptionError && <div className="error">{jobDescriptionError}</div>}
 
           <p>

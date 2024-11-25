@@ -31,8 +31,7 @@ const LoginPage = () => {
       setLoading(false)
       if (data.loginUser.token) {
         localStorage.setItem('token', data.loginUser.token)
-        alert('Login successful!')
-        navigate('/dashboard')
+        navigate('/upload')
       } else {
         alert(data.loginUser.message)
       }

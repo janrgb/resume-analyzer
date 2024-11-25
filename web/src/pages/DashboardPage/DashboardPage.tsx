@@ -29,7 +29,7 @@ const DashboardPage = () => {
 
 const DashboardPage = () => {
   const [data, setData] = useState(null); // Data from SpinnerAPI
-  const [loadingFinished, setLoadingFinished] = useState(false); // Track if loading is finished
+  const [loadingFinished, setLoadingFinished] = useState(true); // Track if loading is finished
 
   // Callback function to handle data after it's fetched
   const handleDataFetched = (fetchedData: any) => {
@@ -45,9 +45,6 @@ const DashboardPage = () => {
   return (
     <PrivateRoute>
       <div className="dashboard-container">
-        {/* Pass fetchDataCallback to SpinnerAPI */}
-        <SpinnerAPI fetchData={fetchAdditionalData} onDataFetched={handleDataFetched} />
-
         {/* Only show dashboard content after loading has finished */}
         {loadingFinished && (
           <>

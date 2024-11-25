@@ -34,6 +34,7 @@ p{
   border: 1px solid red; /* Regular border color */
   font-size: 16px; /* Consistent font size */
   transition: border-color 0.3s ease; /* Smooth transition for border color */
+  color: red;
 }
 
 .input-wrapper.error {
