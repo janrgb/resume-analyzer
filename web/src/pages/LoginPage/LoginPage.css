@@ -9,7 +9,7 @@ p{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  padding-top: 20px;
   background-color: paleturquoise;
   height: 1080px;
 }

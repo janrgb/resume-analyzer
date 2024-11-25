@@ -1,5 +1,6 @@
 import { Metadata, useMutation } from '@redwoodjs/web'
 import { Label, Form, FileField, FieldError, TextAreaField, Submit, SubmitHandler } from '@redwoodjs/forms'
+import PrivateRoute from 'src/components/PrivateRoute'
 
 const UPLOAD_RESUME = gql`
   mutation ResumeUploadMutation ($input: File!) {
@@ -94,24 +95,26 @@ const ResumeUploadPage = () => {
   return (
     <>
       <Metadata title="Resume Upload" description="Resume upload page" />
-      <h1>Upload Resume and Description</h1>
-      <br></br>
-      <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-        <Label name="resume" errorClassName="error">
-          Upload Resume (PDF Only)
-        </Label>
-        <FileField name="resume" accept=".pdf" validation={{ required: true }} errorClassName="error"/>
-        <FieldError name="resume" className="error" />
-        <Label name="jobDescription" errorClassName="error">Job Description</Label>
-        <TextAreaField
-          name="jobDescription"
-          maxLength={5000}
-          validation={{ required: true }}
-          errorClassName="error"
-        />
-        <FieldError name="jobDescription" className="error" />
-        <Submit>Upload</Submit>
-      </Form>
+      <PrivateRoute>
+        <h1>Upload Resume and Description</h1>
+        <br></br>
+        <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
+          <Label name="resume" errorClassName="error">
+            Upload Resume (PDF Only)
+          </Label>
+          <FileField name="resume" accept=".pdf" validation={{ required: true }} errorClassName="error"/>
+          <FieldError name="resume" className="error" />
+          <Label name="jobDescription" errorClassName="error">Job Description</Label>
+          <TextAreaField
+            name="jobDescription"
+            maxLength={5000}
+            validation={{ required: true }}
+            errorClassName="error"
+          />
+          <FieldError name="jobDescription" className="error" />
+          <Submit>Upload</Submit>
+        </Form>
+      </PrivateRoute>
     </>
   )
 }
