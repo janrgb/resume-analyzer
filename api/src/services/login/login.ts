@@ -1,6 +1,6 @@
 import { MutationResolvers } from "types/graphql";
 import { compare } from 'bcrypt'
-import { users } from '../signup/signup_endpoint'
+import { users } from '../signup/signup'
 import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = 'your-secure-secret'
@@ -42,7 +42,7 @@ export const loginUser: MutationResolvers['loginUser'] = async ({ input }) => {
 
   return {
     __typename: 'Token',
-    message: token,
+    token: token,
   }
 }
 

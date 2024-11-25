@@ -10,7 +10,7 @@ export const schema = gql`
   }
 
   type Token {
-    message: String!
+    token: String!
   }
 
   type Error {

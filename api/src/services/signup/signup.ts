@@ -20,7 +20,7 @@ export const registerUser: MutationResolvers['registerUser'] = async ({ input })
   if (!email_regex.test(email)) {
     return {
       code: 400,
-      message: "Email not accpeted",
+      message: "Email must be valid",
     }
   }
 
@@ -45,7 +45,7 @@ export const registerUser: MutationResolvers['registerUser'] = async ({ input })
 
   return {
     code: 201,
-    message: "User registered. Yipee!",
+    message: "User registered",
   }
 }
 

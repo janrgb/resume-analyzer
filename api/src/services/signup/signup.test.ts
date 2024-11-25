@@ -1,5 +1,5 @@
-import { registerUser } from './signup_endpoint'
-import { users } from './signup_endpoint' // Ensure users array is accessible for testing
+import { registerUser } from './signup'
+import { users } from './signup' // Ensure users array is accessible for testing
 
 describe('registerUser', () => {
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('registerUser', () => {
     const response = await registerUser({ input })
 
     expect(response.code).toBe(201)
-    expect(response.message).toBe('User registered. Yipee!')
+    expect(response.message).toBe('User registered')
     expect(users).toHaveLength(1)
     expect(users[0]).toMatchObject({
       email: input.email,
@@ -56,7 +56,7 @@ describe('registerUser', () => {
     const response = await registerUser({ input })
 
     expect(response.code).toBe(400)
-    expect(response.message).toBe('Email not accpeted')
+    expect(response.message).toBe('Email must be valid')
     expect(users).toHaveLength(0) // No user should be added
   })
 

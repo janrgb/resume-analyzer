@@ -1,5 +1,5 @@
-import { loginUser } from './login_endpoint'
-import { users } from '../signup/signup_endpoint'
+import { loginUser } from './login'
+import { users } from '../signup/signup'
 import { hash } from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
@@ -24,8 +24,7 @@ describe('loginUser', () => {
 
     const response = await loginUser({ input })
 
-    expect(response.__typename).toBe('Token')
-    expect(response.message).toBe(`mock-token-${input.email}`)
+    expect(response).toEqual({ __typename: "Token", token: `mock-token-${input.email}` })
   })
 
   it('should fail when email is not registered', async () => {
@@ -33,8 +32,7 @@ describe('loginUser', () => {
 
     const response = await loginUser({ input })
 
-    expect(response.__typename).toBe('Error')
-    expect(response.message).toBe('Invalid email or password.')
+    expect(response).toEqual({ message: 'Invalid email or password.' })
   })
 
   it('should fail when password is incorrect', async () => {
@@ -47,7 +45,7 @@ describe('loginUser', () => {
     const response = await loginUser({ input })
 
     expect(response.__typename).toBe('Error')
-    expect(response.message).toBe('Invalid email or password.')
+    expect(response).toEqual({ message: 'Invalid email or password.' })
   })
 
   it('should fail when email or password is missing', async () => {
@@ -60,7 +58,7 @@ describe('loginUser', () => {
       const response = await loginUser({ input })
 
       expect(response.__typename).toBe('Error')
-      expect(response.message).toBe('Email and password are required.')
+      expect(response).toEqual({ message: 'Email and password are required.' })
     }
   })
 })
