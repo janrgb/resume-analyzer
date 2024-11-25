@@ -1,21 +1,14 @@
-// import { Link, routes } from '@redwoodjs/router'
 import { Metadata, useMutation } from '@redwoodjs/web'
-import {
-  Form,
-  TextField,
-  Label,
-  FieldError,
-  Submit,
-  SubmitHandler,
-} from '@redwoodjs/forms'
+import { Form, TextField, Label, FieldError, Submit, SubmitHandler } from '@redwoodjs/forms'
+import { navigate } from '@redwoodjs/router'
+import './LoginPage.css'
 
 const LOGIN_USER = gql`
-  mutation UserLoginMutation ($input: LoginUser!) {
+  mutation UserLoginMutation($input: LoginUser!) {
     loginUser(input: $input) {
       ... on Token {
         token
       }
-
       ... on Error {
         message
       }
@@ -24,8 +17,8 @@ const LOGIN_USER = gql`
 `
 
 interface FormValues {
-  email: String
-  password: String
+  email: string
+  password: string
 }
 
 const LoginPage = () => {
@@ -33,18 +26,18 @@ const LoginPage = () => {
     onCompleted: (data) => {
       if (data.loginUser.token) {
         localStorage.setItem('token', data.loginUser.token)
-        alert("Login successful!")
+        alert('Login successful!')
       } else {
         alert(data.loginUser.message)
       }
     },
     onError: (error) => {
       alert(`Unexpected Error: ${error.message}`)
-    }
+    },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // Send a loginUser mutation.
+    // Send login mutation
     loginUser({
       variables: {
         input: {
@@ -56,33 +49,49 @@ const LoginPage = () => {
   }
 
   return (
-    <>
+    <div className="home">
       <Metadata title="Login" description="Login page" />
-      <h1>Login</h1>
-      <br></br>
+      <h1 className="title">Ace Your Application!</h1>
       <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-        <Label name="email" errorClassName="error">
-          Email
-        </Label>
-        <TextField
-          name="email"
-          validation={{required : true}}
-          errorClassName="error"
-        />
-        <FieldError name="email" className="error" />
-        <Label name="password" errorClassName="error">
-          Password
-        </Label>
-        <TextField
-          name="password"
-          validation={{required : true}}
-          errorClassName="error"
-        />
-        <FieldError name="password" className="error" />
+        <div className="input-wrapper">
+          <Label name="email" errorClassName="error">
+            Email
+          </Label>
+          <TextField
+            name="email"
+            validation={{ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ }}
+            errorClassName="error-field"
+            className="field"
+          />
+          <FieldError name="email" className="error-text" />
+        </div>
 
-        <Submit>Login</Submit>
+        <div className="input-wrapper">
+          <Label name="password" errorClassName="error">
+            Password
+          </Label>
+          <TextField
+            name="password"
+            validation={{ required: true }}
+            errorClassName="error-field"
+            className="field"
+          />
+          <FieldError name="password" className="error-text" />
+        </div>
+
+        <div className="separator"></div>
+        <Submit className="button">Login</Submit>
+        <div className="separator"></div>
+        <button
+          type="button"
+          className="button"
+          onClick={() => navigate('/register')}
+        >
+        New User?
+        </button>
       </Form>
-    </>
+
+    </div>
   )
 }
 
