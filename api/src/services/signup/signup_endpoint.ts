@@ -10,7 +10,7 @@ export const registerUser: MutationResolvers['registerUser'] = async ({ input })
   if (!email || !password || !username) {
     return {
       code: 400,
-      message: "All fields required",
+      message: "All fields are required",
     }
   }
 
