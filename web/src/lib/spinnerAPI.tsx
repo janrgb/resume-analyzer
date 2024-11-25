@@ -15,7 +15,7 @@ const SpinnerAPI = ({ onDataFetched }: SpinnerAPIProps) => {
 
   // Mock data to simulate API response
   const mockData = {
-    fitScore: 10,
+    fitScore: 90,
     matchedSkills: ['JavaScript', 'HTML', 'CSS'],
     suggestions: ['Add TypeScript', 'Improve formatting', 'Needs to be more Sigma'],
   };
@@ -27,7 +27,7 @@ const SpinnerAPI = ({ onDataFetched }: SpinnerAPIProps) => {
     await delay(3000); // Simulates a 3-second delay
 
     try {
-      /* const response = await fetch('/api/resume-analysis'); // Replace with API URL
+      /* const response = await fetch('api/urls'); // Replace with API URL or URLS, might have to set up a list for multiple urls 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
