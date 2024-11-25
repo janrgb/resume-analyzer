@@ -3,6 +3,8 @@ import { Label, Form, FileField, FieldError, TextAreaField, Submit, SubmitHandle
 import PrivateRoute from 'src/components/PrivateRoute'
 import './ResumeUploadPage.css'
 import { isValidElement, useState } from 'react'
+import Spinner from 'src/components/Spinner/Spinner'
+import { navigate } from '@redwoodjs/router'
 
 const UPLOAD_RESUME = gql`
   mutation ResumeUploadMutation ($input: File!) {
@@ -33,10 +35,20 @@ const MAX_FILE_SIZE = 2 * 1024 * 1024
 const MAX_CHAR_COUNT = 5000
 
 const ResumeUploadPage = () => {
+  const [loading, setLoadingCount] = useState(0)
+
+  const startLoading = () => setLoadingCount((prev) => prev + 1)
+  const stopLoading = () => setLoadingCount((prev) => Math.max(prev - 1, 0))
+
+  const [resumeSuccess, setResumeSuccess] = useState(false)
+  const [descriptionSuccess, setDescriptionSuccess] = useState(false)
+
   const [resumeUpload] = useMutation(UPLOAD_RESUME, {
     onCompleted: (data) => {
+      stopLoading()
       const { status } = data.resumeUpload
       if (status === 'success'){
+        setResumeSuccess(true)
         const { message } = data.resumeUpload
         alert(message)
       } else {
@@ -45,14 +57,17 @@ const ResumeUploadPage = () => {
       }
     },
     onError: (error) => {
+      stopLoading()
       alert(`Unexpected error: ${error.message}`)
     }
   })
   const [uploadDescription] = useMutation(UPLOAD_DESC, {
     onCompleted: (data) => {
+      stopLoading()
       const { status } = data.uploadDescription
 
       if (status === 'success'){
+        setDescriptionSuccess(true)
         const { message } = data.uploadDescription
         alert(message)
       } else {
@@ -61,6 +76,7 @@ const ResumeUploadPage = () => {
       }
     },
     onError: (error) => {
+      stopLoading()
       alert(`Unexpected error: ${error.message}`)
     }
   })
@@ -111,6 +127,7 @@ const ResumeUploadPage = () => {
       alert("Please fix the errors before submitting.")
       return
     }
+    startLoading()
 
     try {
       // Get file metadata.
@@ -129,6 +146,7 @@ const ResumeUploadPage = () => {
       }
 
       // Send a uploadDescription mutation.
+      startLoading()
       await uploadDescription({
         variables: {
           input: {
@@ -139,42 +157,52 @@ const ResumeUploadPage = () => {
     } catch (error) {
       console.error("Error during submission:", error)
       alert('An error occurred during submission.')
+    } finally {
+      stopLoading()
     }
   }
 
+  if (resumeSuccess && descriptionSuccess) {
+    navigate('/dashboard')
+  }
+
   return (
-    <div className="home">
-      <Metadata title="Resume Upload" description="Resume upload page" />
-      <PrivateRoute>
-        <h1>Upload Resume and Description</h1>
-        <br></br>
-        <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-          <Label name="resume" errorClassName="error">
-            Upload Resume (PDF Only - 2MB limit)
-          </Label>
-          <FileField name="resume" accept=".pdf" validation={{ required: true }} errorClassName="error-field" onChange={handleFileChange}/>
-          <FieldError name="resume" className="error" />
-          {fileError && <div className="error">{fileError}</div>}
-          <Label name="job description" errorClassName="error-label">Job Description (Max 5000 characters)</Label>
-          <TextAreaField
-            name="job description"
-            value={jobDescription}
-            onChange={handleJobDescriptionChange}
-            maxLength={5000}
-            validation={{ required: false }}
-            errorClassName="error-field"
-          />
-          <FieldError name="job description" className="error" />
-          {jobDescriptionError && <div className="error">{jobDescriptionError}</div>}
+    <PrivateRoute>
+      {loading > 0 ? (
+        <Spinner />
+      ) : (
+        <div className="home-resume">
+          <Metadata title="Resume Upload" description="Resume upload page" />
+            <h1>Upload Resume and Description</h1>
+            <br></br>
+            <Form className="form-resume" onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
+              <Label name="resume" errorClassName="error">
+                Upload Resume (PDF Only - 2MB limit)
+              </Label>
+              <FileField name="resume" accept=".pdf" validation={{ required: true }} errorClassName="error-field" onChange={handleFileChange}/>
+              <FieldError name="resume" className="error-field-resume" />
+              {fileError && <div className="error">{fileError}</div>}
+              <Label name="job description" errorClassName="error-label">Job Description (Max 5000 characters)</Label>
+              <TextAreaField
+                name="job description"
+                value={jobDescription}
+                onChange={handleJobDescriptionChange}
+                maxLength={5000}
+                validation={{ required: false }}
+                errorClassName="error-field"
+              />
+              <FieldError name="job description" className="error-field-resume" />
+              {jobDescriptionError && <div className="error">{jobDescriptionError}</div>}
 
-          <p>
-            {MAX_CHAR_COUNT - jobDescription.length} characters remaining
-          </p>
+              <p>
+                {MAX_CHAR_COUNT - jobDescription.length} characters remaining
+              </p>
 
-          <Submit className="button" disabled={!isFileValid || !isJobDescriptionValid}>Upload</Submit>
-        </Form>
-      </PrivateRoute>
-    </div>
+              <Submit className="button" disabled={!isFileValid || !isJobDescriptionValid}>Upload</Submit>
+            </Form>
+        </div>
+      )}
+    </PrivateRoute>
   )
 }
 

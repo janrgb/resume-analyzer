@@ -2,6 +2,10 @@
 
 /* General Styles */
 .dashboard-container {
+    align-items: center;
+    padding-top: 20px;
+    background-color: paleturquoise;
+    height: 1080px;
     padding: 2rem;
     font-family: 'Arial', 'sans-serif';
   }

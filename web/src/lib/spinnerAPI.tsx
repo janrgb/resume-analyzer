@@ -1,5 +1,6 @@
+/*
 import { useEffect, useState } from 'react';
-import Spinner from 'src/components/Spinner';
+import Spinner from 'src/components/Spinner/Spinner';
 
 // Delay function to simulate artificial loading time
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -23,16 +24,16 @@ const SpinnerAPI = ({ onDataFetched }: SpinnerAPIProps) => {
   const fetchData = async () => {
     setLoading(true); // Show spinner
     setError(null); // Reset error state
-    
+
     await delay(3000); // Simulates a 3-second delay
 
     try {
-      /* const response = await fetch('api/urls'); // Replace with API URL or URLS, might have to set up a list for multiple urls 
+      /* const response = await fetch('api/urls'); // Replace with API URL or URLS, might have to set up a list for multiple urls
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
       const result = await response.json();
-      setData(result); */
+      setData(result);
       setData(mockData);
       onDataFetched(mockData); // Pass data to parent component
     } catch (err) {
@@ -64,3 +65,42 @@ const SpinnerAPI = ({ onDataFetched }: SpinnerAPIProps) => {
 };
 
 export default SpinnerAPI;
+
+import { useState, useEffect } from 'react'
+import Spinner from 'src/components/Spinner/Spinner'
+
+const SpinnerAPI = ({
+  fetchData,
+  onDataFetched,
+}: {
+  fetchData: () => Promise<any> // Fetching logic from parent
+  onDataFetched: (data: any) => void // Callback to send data to parent
+}) => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchDataWithSpinner = async () => {
+      setLoading(true)
+      setError(null)
+
+      try {
+        const data = await fetchData()
+        onDataFetched(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchDataWithSpinner()
+  }, [fetchData, onDataFetched])
+
+  if (loading) return <Spinner />
+  if (error) return <div>Error: {error}</div>
+
+  return null
+}
+
+export default SpinnerAPI*/

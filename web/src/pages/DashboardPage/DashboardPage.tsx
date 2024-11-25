@@ -2,7 +2,6 @@
 import { Metadata } from '@redwoodjs/web'
 import { Fragment } from 'react';
 import { useEffect, useState } from 'react'
-import SpinnerAPI from 'src/lib/spinnerAPI';
 import './DashboardPage.css'
 import PrivateRoute from 'src/components/PrivateRoute'
 
@@ -24,40 +23,33 @@ const DashboardPage = () => {
       #}
     </>
   )
-} 
+}
 */
 
 const DashboardPage = () => {
-  const [data, setData] = useState(null); // Data from SpinnerAPI
-  const [loadingFinished, setLoadingFinished] = useState(false); // Track if loading is finished
-
-  // Callback function to handle data after it's fetched
-  const handleDataFetched = (fetchedData: any) => {
-    setData(fetchedData);
-    setLoadingFinished(true); // Set loading as finished after data is fetched
+  const mockData = {
+    fitScore: 50,
+    matchedSkills: ['JavaScript', 'HTML', 'CSS'],
+    suggestions: ['Add TypeScript', 'Improve formatting', 'Needs to be more Sigma'],
   };
 
   return (
-    <div className="dashboard-container">
-      {/* Pass fetchDataCallback to SpinnerAPI */}
-      <SpinnerAPI onDataFetched={handleDataFetched} />
-
-      {/* Only show dashboard content after loading has finished */}
-      {loadingFinished && (
-        <>
+    <PrivateRoute>
+      <div className="dashboard-container">
+        {/* Pass fetchDataCallback to SpinnerAPI */}
         <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
           <div className="section">
             <h2>Resume Fit Score</h2>
             <div className="fit-score-bar">
-            <div className="fit-score-fill" style={{ width: `${data?.fitScore || 0}%` }}></div> 
+            <div className="fit-score-fill" style={{ width: `${mockData.fitScore || 0}%` }}></div>
             </div>
-            <p className="font-bold text-green-500">{data?.fitScore}% Match</p>
+            <p className="font-bold text-green-500">{mockData.fitScore}% Match</p>
           </div>
 
           <div className="section">
             <h2>Skills and Keywords Matched</h2>
             <ul>
-              {data?.matchedSkills.map((skill, index) => (
+              {mockData.matchedSkills.map((skill: any, index: any) => (
                 <li key={index}>{skill}</li>
               ))}
             </ul>
@@ -66,14 +58,13 @@ const DashboardPage = () => {
           <div className="section">
             <h2>Improvement Suggestions</h2>
             <ul>
-              {data?.suggestions.map((suggestion, index) => (
+              {mockData.suggestions.map((suggestion: any, index: any) => (
                 <li key={index}>{suggestion}</li>
               ))}
             </ul>
           </div>
-        </>
-      )}
-    </div>
+      </div>
+    </PrivateRoute>
   );
 
 };

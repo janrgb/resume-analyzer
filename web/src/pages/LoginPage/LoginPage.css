@@ -14,6 +14,10 @@ p{
   height: 1080px;
 }
 
+.login-label{
+  color: black
+}
+
 .field{
   padding: 10px;
   margin: 5px;
@@ -30,6 +34,7 @@ p{
   border: 1px solid red; /* Regular border color */
   font-size: 16px; /* Consistent font size */
   transition: border-color 0.3s ease; /* Smooth transition for border color */
+  color: red;
 }
 
 .input-wrapper.error {
@@ -57,7 +62,7 @@ p{
 
 
 /* Button Styling */
-.button {
+.button-login {
   background: linear-gradient(145deg, #6e7dff, #5560ea); /* Gradient background */
   color: white;                          /* Text color */
   padding: 12px 25px;                    /* Padding around the text */
@@ -72,14 +77,14 @@ p{
 }
 
 
-.button:hover {
+.button-login:hover {
   background: linear-gradient(145deg, #5560ea, #6e7dff); /* Reversed gradient for hover */
   box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2); /* Bigger shadow on hover */
   transform: translateY(-3px);              /* Slightly lifts the button */
 }
 
 
-.button:active {
+.button-login:active {
   transform: translateY(1px); /* Button sinks down slightly when clicked */
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1); /* Reset shadow */
 }
