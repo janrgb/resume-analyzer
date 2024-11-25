@@ -5,25 +5,6 @@ import { useEffect, useState } from 'react'
 import SpinnerAPI from 'src/lib/spinnerAPI';
 import './DashboardPage.css'
 
-
-/* const DashboardPage = () => {
-  return (
-    <>
-      <Metadata title="Dashboard" description="Dashboard page" />
-
-      <h1>DashboardPage</h1>
-      <p>
-        Find me in <code>./web/src/pages/DashboardPage/DashboardPage.tsx</code>
-      </p>
-      #{
-          #My default route is named `dashboard`, link to me with:
-          #`<Link to={routes.dashboard()}>Dashboard</Link>`
-      #}
-    </>
-  )
-} 
-*/
-
 const DashboardPage = () => {
   const [data, setData] = useState(null); // Data from SpinnerAPI
   const [loadingFinished, setLoadingFinished] = useState(false); // Track if loading is finished
