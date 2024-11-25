@@ -15,6 +15,10 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/test-image-p-age" page={TestImagePAgePage} name="testImagePAge" />
+      <Set wrap={ScaffoldLayout} title="Posts" titleTo="posts" buttonLabel="New Post" buttonTo="newPost">
+        <Route path="/dashboard" page={DashboardPage} name="dashboard" />
+      </Set>
       <Set wrap={MainLayout}>
         <Route path="/" page={RegisterPage} name="register" />
         <Route path="/login" page={LoginPage} name="login" />

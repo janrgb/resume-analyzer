@@ -1,0 +1,67 @@
+/* DashboardPage.css */
+
+/* General Styles */
+.dashboard-container {
+    padding: 2rem;
+    font-family: 'Arial, sans-serif';
+  }
+  
+  h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .section {
+    margin-bottom: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: bold;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Resume Fit Score */
+  .fit-score-bar {
+    background: #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 300px;
+    height: 20px;
+    margin: 0 auto;
+  }
+  
+  .fit-score-fill {
+    background: #4caf50;
+    height: 100%;
+  }
+  
+  /* Skills and Keywords */
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    background: #eff6ff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  /* Improvement Suggestions */
+  .suggestions-list li {
+    color: #f44336;
+  }
+  
+  /* Error Styling */
+  .error {
+    color: red;
+    background-color: #fdd;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    text-align: center;
+  }
+  

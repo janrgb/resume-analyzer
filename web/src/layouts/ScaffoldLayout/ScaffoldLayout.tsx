@@ -28,6 +28,7 @@ const ScaffoldLayout = ({
         <Link to={routes[buttonTo]()} className="rw-button rw-button-green">
           <div className="rw-button-icon">+</div> {buttonLabel}
         </Link>
+        <Link to={routes.dashboard()} className="rw-link">Dashboard</Link>
       </header>
       <main className="rw-main">{children}</main>
     </div>
