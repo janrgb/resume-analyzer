@@ -2,6 +2,8 @@ import { Metadata, useMutation } from '@redwoodjs/web'
 import { Form, TextField, Label, FieldError, Submit, SubmitHandler } from '@redwoodjs/forms'
 import { navigate } from '@redwoodjs/router'
 import RootGuard from 'src/components/RootGuard/RootGuard'
+import { useState } from 'react'
+import Spinner from 'src/components/Spinner/Spinner'
 import './LoginPage.css'
 
 const LOGIN_USER = gql`
@@ -23,8 +25,10 @@ interface FormValues {
 }
 
 const LoginPage = () => {
+  const [loading, setLoading] = useState(null)
   const [loginUser] = useMutation(LOGIN_USER, {
     onCompleted: (data) => {
+      setLoading(false)
       if (data.loginUser.token) {
         localStorage.setItem('token', data.loginUser.token)
         alert('Login successful!')
@@ -34,12 +38,14 @@ const LoginPage = () => {
       }
     },
     onError: (error) => {
+      setLoading(false)
       alert(`Unexpected Error: ${error.message}`)
     },
   })
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     // Send login mutation
+    setLoading(true)
     loginUser({
       variables: {
         input: {
@@ -52,49 +58,53 @@ const LoginPage = () => {
 
   return (
     <RootGuard>
-      <div className="home">
-        <Metadata title="Login" description="Login page" />
-        <h1 className="title">Ace Your Application!</h1>
-        <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-          <div className="input-wrapper">
-            <Label name="email" errorClassName="error">
-              Email
-            </Label>
-            <TextField
-              name="email"
-              validation={{ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ }}
-              errorClassName="error-field"
-              className="field"
-            />
-            <FieldError name="email" className="error-text" />
-          </div>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="home">
+          <Metadata title="Login" description="Login page" />
+          <h1 className="title">Ace Your Application!</h1>
+          <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
+            <div className="input-wrapper">
+              <Label className="login-label" name="email" errorClassName="error">
+                Email
+              </Label>
+              <TextField
+                name="email"
+                validation={{ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ }}
+                errorClassName="error-field"
+                className="field"
+              />
+              <FieldError name="email" className="error-text" />
+            </div>
 
-          <div className="input-wrapper">
-            <Label name="password" errorClassName="error">
-              Password
-            </Label>
-            <TextField
-              name="password"
-              validation={{ required: true }}
-              errorClassName="error-field"
-              className="field"
-            />
-            <FieldError name="password" className="error-text" />
-          </div>
+            <div className="input-wrapper">
+              <Label className="login-label" name="password" errorClassName="error">
+                Password
+              </Label>
+              <TextField
+                name="password"
+                validation={{ required: true }}
+                errorClassName="error-field"
+                className="field"
+              />
+              <FieldError name="password" className="error-text" />
+            </div>
 
-          <div className="separator"></div>
-          <Submit className="button">Log In</Submit>
-          <div className="separator"></div>
-          <button
-            type="button"
-            className="button"
-            onClick={() => navigate('/')}
-          >
-          New User?
-          </button>
-        </Form>
+            <div className="separator"></div>
+            <Submit className="button-login">Log In</Submit>
+            <div className="separator"></div>
+            <button
+              type="button"
+              className="button-login"
+              onClick={() => navigate('/')}
+            >
+            New User?
+            </button>
+          </Form>
 
-      </div>
+        </div>
+      )}
     </RootGuard>
   )
 }

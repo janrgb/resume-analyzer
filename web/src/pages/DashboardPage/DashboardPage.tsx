@@ -24,7 +24,7 @@ const DashboardPage = () => {
       #}
     </>
   )
-} 
+}
 */
 
 const DashboardPage = () => {
@@ -37,43 +37,50 @@ const DashboardPage = () => {
     setLoadingFinished(true); // Set loading as finished after data is fetched
   };
 
+  const fetchAdditionalData = async () => {
+    // Replace with actual logic if needed
+    return new Promise((resolve) => setTimeout(() => resolve({ fitScore: 95 }), 3000))
+  }
+
   return (
-    <div className="dashboard-container">
-      {/* Pass fetchDataCallback to SpinnerAPI */}
-      <SpinnerAPI onDataFetched={handleDataFetched} />
+    <PrivateRoute>
+      <div className="dashboard-container">
+        {/* Pass fetchDataCallback to SpinnerAPI */}
+        <SpinnerAPI fetchData={fetchAdditionalData} onDataFetched={handleDataFetched} />
 
-      {/* Only show dashboard content after loading has finished */}
-      {loadingFinished && (
-        <>
-        <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
-          <div className="section">
-            <h2>Resume Fit Score</h2>
-            <div className="fit-score-bar">
-            <div className="fit-score-fill" style={{ width: `${data?.fitScore || 0}%` }}></div> 
+        {/* Only show dashboard content after loading has finished */}
+        {loadingFinished && (
+          <>
+          <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
+            <div className="section">
+              <h2>Resume Fit Score</h2>
+              <div className="fit-score-bar">
+              <div className="fit-score-fill" style={{ width: `${data?.fitScore || 0}%` }}></div>
+              </div>
+              <p className="font-bold text-green-500">{data?.fitScore}% Match</p>
             </div>
-            <p className="font-bold text-green-500">{data?.fitScore}% Match</p>
-          </div>
 
-          <div className="section">
-            <h2>Skills and Keywords Matched</h2>
-            <ul>
-              {data?.matchedSkills.map((skill, index) => (
-                <li key={index}>{skill}</li>
-              ))}
-            </ul>
-          </div>
+            <div className="section">
+              <h2>Skills and Keywords Matched</h2>
+              <ul>
+                {data?.matchedSkills.map((skill: any, index: any) => (
+                  <li key={index}>{skill}</li>
+                ))}
+              </ul>
+            </div>
 
-          <div className="section">
-            <h2>Improvement Suggestions</h2>
-            <ul>
-              {data?.suggestions.map((suggestion, index) => (
-                <li key={index}>{suggestion}</li>
-              ))}
-            </ul>
-          </div>
-        </>
-      )}
-    </div>
+            <div className="section">
+              <h2>Improvement Suggestions</h2>
+              <ul>
+                {data?.suggestions.map((suggestion: any, index: any) => (
+                  <li key={index}>{suggestion}</li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
+      </div>
+    </PrivateRoute>
   );
 
 };

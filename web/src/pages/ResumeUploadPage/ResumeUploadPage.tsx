@@ -143,12 +143,12 @@ const ResumeUploadPage = () => {
   }
 
   return (
-    <div className="home">
+    <div className="home-resume">
       <Metadata title="Resume Upload" description="Resume upload page" />
       <PrivateRoute>
         <h1>Upload Resume and Description</h1>
         <br></br>
-        <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
+        <Form className="form-resume" onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
           <Label name="resume" errorClassName="error">
             Upload Resume (PDF Only - 2MB limit)
           </Label>

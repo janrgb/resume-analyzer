@@ -1,5 +1,5 @@
 /* General page styles */
-.home{
+.home-resume{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +16,7 @@ h1 {
 }
 
 /* Form container */
-form {
+.form-resume {
   max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
@@ -67,7 +67,7 @@ input[type="file"]:focus, textarea:focus {
 }
 
 /* Submit button */
-button[type="submit"], button[type="button"] {
+.button[type="submit"], .button[type="button"] {
   width: 100%;
   padding: 1rem;
   background-color: #007bff;
@@ -80,7 +80,7 @@ button[type="submit"], button[type="button"] {
 }
 
 
-button[type="submit"]:disabled, button[type="button"]:disabled {
+.button[type="submit"]:disabled, .button[type="button"]:disabled {
   width: 100%;
   padding: 1rem;
   background-color: #ccc;
@@ -93,11 +93,11 @@ button[type="submit"]:disabled, button[type="button"]:disabled {
   opacity: 0.7;
 }
 
-button[type="submit"]:hover, button[type="button"]:hover {
+.button[type="submit"]:hover, .button[type="button"]:hover {
   background-color: #0056b3;
 }
 
-button[type="submit"]:hover:disabled, button[type="button"]:hover:disabled {
+.button[type="submit"]:hover:disabled, .button[type="button"]:hover:disabled {
   background-color: #ccc;
 }
 
@@ -111,7 +111,7 @@ button[type="submit"]:hover:disabled, button[type="button"]:hover:disabled {
     padding: 1.5rem;
   }
 
-  button[type="submit"], button[type="button"] {
+  .button[type="submit"], .button[type="button"] {
     font-size: 1rem;
   }
 }

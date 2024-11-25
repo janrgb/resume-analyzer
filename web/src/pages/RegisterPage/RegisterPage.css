@@ -55,9 +55,13 @@ p{
   margin-top: 20px;
 }
 
+.login-label{
+  color: black
+}
+
 
 /* Button Styling */
-.button {
+.button-reg {
   background: linear-gradient(145deg, #6e7dff, #5560ea); /* Gradient background */
   color: white;                          /* Text color */
   padding: 12px 25px;                    /* Padding around the text */
@@ -72,14 +76,14 @@ p{
 }
 
 
-.button:hover {
+.button-reg:hover {
   background: linear-gradient(145deg, #5560ea, #6e7dff); /* Reversed gradient for hover */
   box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.2); /* Bigger shadow on hover */
   transform: translateY(-3px);              /* Slightly lifts the button */
 }
 
 
-.button:active {
+.button-reg:active {
   transform: translateY(1px); /* Button sinks down slightly when clicked */
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1); /* Reset shadow */
 }

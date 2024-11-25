@@ -72,7 +72,7 @@ const RegisterPage = () => {
         <h1 className="title">Ready to Start Acing Your Applications?</h1>
         <br></br>
         <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-          <Label name="username" errorClassName="error">
+          <Label className="login-label" name="username" errorClassName="error">
             Username
           </Label>
           <TextField
@@ -82,7 +82,7 @@ const RegisterPage = () => {
             className="field"
           />
           <FieldError name="username" className="error" />
-          <Label name="email" errorClassName="error">
+          <Label className="login-label" name="email" errorClassName="error">
             Email
           </Label>
           <TextField
@@ -92,7 +92,7 @@ const RegisterPage = () => {
             className="field"
           />
           <FieldError name="email" className="error" />
-          <Label name="password" errorClassName="error">
+          <Label className="login-label" name="password" errorClassName="error">
             Password
           </Label>
           <PasswordField
@@ -102,7 +102,7 @@ const RegisterPage = () => {
             className="field"
           />
           <FieldError name="password" className="error" />
-          <Label name="confirm password" errorClassName="error">
+          <Label className="login-label" name="confirm password" errorClassName="error">
             Confirm Password
           </Label>
           <PasswordField
@@ -113,11 +113,11 @@ const RegisterPage = () => {
           />
           <FieldError name="confirm password" className="error" />
           <div className="separator"></div>
-          <Submit className="button">Sign Up</Submit>
+          <Submit className="button-reg">Sign Up</Submit>
           <div className="separator"></div>
           <button
             type="button"
-            className="button"
+            className="button-reg"
             onClick={() => navigate('/login')}
           >
           Returning User?
