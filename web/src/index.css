@@ -67,12 +67,3 @@ textarea.error {
 .flex-between button {
   display: inline;
 }
-
-.parent{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-  background-color: paleturquoise;
-  height: 1080px;
-}
