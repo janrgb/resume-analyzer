@@ -4,9 +4,12 @@ import { Fragment } from 'react';
 import { useEffect, useState } from 'react'
 import SpinnerAPI from 'src/lib/spinnerAPI';
 import './DashboardPage.css'
+import PrivateRoute from 'src/components/PrivateRoute'
 
 
 /* const DashboardPage = () => {
+
+const DashboardPage = () => {
   return (
     <>
       <Metadata title="Dashboard" description="Dashboard page" />
