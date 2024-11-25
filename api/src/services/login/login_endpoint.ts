@@ -42,7 +42,7 @@ export const loginUser: MutationResolvers['loginUser'] = async ({ input }) => {
 
   return {
     __typename: 'Token',
-    token,
+    message: token,
   }
 }
 
