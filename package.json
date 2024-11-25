@@ -10,6 +10,7 @@
     "@redwoodjs/cli-storybook-vite": "8.4.1",
     "@redwoodjs/core": "8.4.1",
     "@redwoodjs/project-config": "8.4.1",
+    "@types/pdf-parse": "^1.1.4",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.5.12",
     "typescript": "^4.9.5"
@@ -29,6 +30,9 @@
     "@storybook/react-dom-shim@npm:7.6.17": "https://verdaccio.tobbe.dev/@storybook/react-dom-shim/-/react-dom-shim-8.0.8.tgz"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1"
+    "api": "workspace:^",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "workspace": "^0.0.1-preview.1"
   }
 }
