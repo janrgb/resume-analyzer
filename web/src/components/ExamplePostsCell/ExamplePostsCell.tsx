@@ -6,15 +6,11 @@ import type {
 import type {
   CellSuccessProps,
   CellFailureProps,
-  TypedDocumentNode,
 } from '@redwoodjs/web'
 
-export const QUERY: TypedDocumentNode<
-  ExamplePostsQuery,
-  ExamplePostsQueryVariables
-> = gql`
+export const QUERY = gql`
   query ExamplePostsQuery {
-    examplePosts {
+    posts {
       id
     }
   }
@@ -29,11 +25,11 @@ export const Failure = ({ error }: CellFailureProps) => (
 )
 
 export const Success = ({
-  examplePosts,
+  posts,
 }: CellSuccessProps<ExamplePostsQuery>) => {
   return (
     <ul>
-      {examplePosts.map((item) => {
+      {posts.map((item) => {
         return <li key={item.id}>{JSON.stringify(item)}</li>
       })}
     </ul>

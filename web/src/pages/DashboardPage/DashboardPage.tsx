@@ -2,58 +2,64 @@
 import { Metadata } from '@redwoodjs/web'
 import { Fragment } from 'react';
 import { useEffect, useState } from 'react'
-import SpinnerAPI from 'src/lib/spinnerAPI';
 import './DashboardPage.css'
+import PrivateRoute from 'src/components/PrivateRoute/PrivateRoute'
 
-const DashboardPage = () => {
-  const [data, setData] = useState(null); // Data from SpinnerAPI
-  const [loadingFinished, setLoadingFinished] = useState(false); // Track if loading is finished
+// Define a type for mockData to ensure type safety
+type MockData = {
+  fitScore: number
+  matchedSkills: string[]
+  suggestions: string[]
+}
 
-  // Callback function to handle data after it's fetched
-  const handleDataFetched = (fetchedData: any) => {
-    setData(fetchedData);
-    setLoadingFinished(true); // Set loading as finished after data is fetched
-  };
+// Default mock data
+const defaultMockData: MockData = {
+  fitScore: 50,
+  matchedSkills: ['JavaScript', 'HTML', 'CSS'],
+  suggestions: ['Add TypeScript', 'Improve formatting', 'Needs to Lock In'],
+}
 
-  return (
-    <div className="dashboard-container">
-      {/* Pass fetchDataCallback to SpinnerAPI */}
-      <SpinnerAPI onDataFetched={handleDataFetched} />
+const DashboardPage = ({ mockData = defaultMockData }: { mockData?: MockData }) => {
+    const hasData = mockData && Object.keys(mockData).length > 0;
+    return (
+      <PrivateRoute>
+        <div className="dashboard-container">
+          <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
+          {hasData ? (
+            <>
+              <div className="section">
+                <h2>Resume Fit Score</h2>
+                <div className="fit-score-bar">
+                  <div className="fit-score-fill" style={{ width: `${mockData.fitScore || 0}%` }}></div>
+                </div>
+                <p className="font-bold text-green-500" data-testid="fit-score">{mockData.fitScore}% Match</p>
+              </div>
 
-      {/* Only show dashboard content after loading has finished */}
-      {loadingFinished && (
-        <>
-        <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
-          <div className="section">
-            <h2>Resume Fit Score</h2>
-            <div className="fit-score-bar">
-            <div className="fit-score-fill" style={{ width: `${data?.fitScore || 0}%` }}></div> 
+              <div className="section">
+                <h2>Skills and Keywords Matched</h2>
+                <ul>
+                  {mockData.matchedSkills.map((skill: string, index: number) => (
+                    <li key={index}>{skill}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="section">
+                <h2>Improvement Suggestions</h2>
+                <ul>
+                  {mockData.suggestions.map((suggestion: string, index: number) => (
+                    <li key={index}>{suggestion}</li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          ) : (
+            <div className="section">
+              <p>No data available. Please upload a resume to analyze.</p>
             </div>
-            <p className="font-bold text-green-500">{data?.fitScore}% Match</p>
-          </div>
-
-          <div className="section">
-            <h2>Skills and Keywords Matched</h2>
-            <ul>
-              {data?.matchedSkills.map((skill, index) => (
-                <li key={index}>{skill}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="section">
-            <h2>Improvement Suggestions</h2>
-            <ul>
-              {data?.suggestions.map((suggestion, index) => (
-                <li key={index}>{suggestion}</li>
-              ))}
-            </ul>
-          </div>
-        </>
-      )}
-    </div>
-  );
-
+          )}
+        </div>
+      </PrivateRoute>
+    );
 };
-
-export default DashboardPage
+export default DashboardPage;
