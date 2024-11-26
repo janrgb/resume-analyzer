@@ -1,5 +1,4 @@
-import { render } from '@redwoodjs/testing/web'
-
+import { render, screen } from '@redwoodjs/testing/web'
 import DashboardPage from './DashboardPage'
 
 //   Improve this test with help from the Redwood Testing Doc:

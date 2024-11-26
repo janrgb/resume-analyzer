@@ -31,7 +31,7 @@ const DashboardPage = () => {
     fitScore: 50,
     matchedSkills: ['JavaScript', 'HTML', 'CSS'],
     suggestions: ['Add TypeScript', 'Improve formatting', 'Needs to be more Sigma'],
-  };
+  }
 
   return (
     <PrivateRoute>
@@ -49,7 +49,7 @@ const DashboardPage = () => {
           <div className="section">
             <h2>Skills and Keywords Matched</h2>
             <ul>
-              {mockData.matchedSkills.map((skill: any, index: any) => (
+              {mockData.matchedSkills.map((skill: any, index: number) => (
                 <li key={index}>{skill}</li>
               ))}
             </ul>
@@ -58,7 +58,7 @@ const DashboardPage = () => {
           <div className="section">
             <h2>Improvement Suggestions</h2>
             <ul>
-              {mockData.suggestions.map((suggestion: any, index: any) => (
+              {mockData.suggestions.map((suggestion: any, index: number) => (
                 <li key={index}>{suggestion}</li>
               ))}
             </ul>
