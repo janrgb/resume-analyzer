@@ -97,6 +97,7 @@ const LoginPage = () => {
               type="button"
               className="button-login"
               onClick={() => navigate('/')}
+              data-testid="new-user-button"
             >
             New User?
             </button>

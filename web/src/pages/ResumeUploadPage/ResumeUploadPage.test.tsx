@@ -12,3 +12,4 @@ describe('ResumeUploadPage', () => {
     }).not.toThrow()
   })
 })
+

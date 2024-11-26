@@ -32,7 +32,7 @@ describe('loginUser', () => {
 
     const response = await loginUser({ input })
 
-    expect(response).toEqual({ message: 'Invalid email or password.' })
+    expect(response).toEqual({ __typename: "Error", message: 'Invalid email or password.' })
   })
 
   it('should fail when password is incorrect', async () => {
@@ -45,7 +45,7 @@ describe('loginUser', () => {
     const response = await loginUser({ input })
 
     expect(response.__typename).toBe('Error')
-    expect(response).toEqual({ message: 'Invalid email or password.' })
+    expect(response).toEqual({ __typename: "Error", message: 'Invalid email or password.' })
   })
 
   it('should fail when email or password is missing', async () => {
@@ -58,7 +58,7 @@ describe('loginUser', () => {
       const response = await loginUser({ input })
 
       expect(response.__typename).toBe('Error')
-      expect(response).toEqual({ message: 'Email and password are required.' })
+      expect(response).toEqual({ __typename: "Error", message: 'Email and password are required.' })
     }
   })
 })
