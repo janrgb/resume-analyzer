@@ -67,6 +67,7 @@ textarea.error {
 .flex-between button {
   display: inline;
 }
+<<<<<<< HEAD
 
 .parent{
   display: flex;
@@ -76,3 +77,5 @@ textarea.error {
   background-color: paleturquoise;
   height: 1080px;
 }
+=======
+>>>>>>> 73679a7ad7248940a04b70f6ddd4613e291300d3
