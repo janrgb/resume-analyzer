@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import './DashboardPage.css'
 import PrivateRoute from 'src/components/PrivateRoute/PrivateRoute'
 
+
 // Define a type for mockData to ensure type safety
 type MockData = {
   fitScore: number
