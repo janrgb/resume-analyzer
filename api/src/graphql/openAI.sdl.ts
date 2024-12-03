@@ -1,10 +1,15 @@
 export const schema = gql`
+  type ResumeDefinition {
+    resume_text: String!
+    job_description: String!
+  }
+
   type ChatGPTResponse {
-    role: String!
-    content: String!
+    fit_score: Int!
+    feedback: [String!]!
   }
 
   type Query {
-    generateText(prompt: String!): ChatGPTResponse! @skipAuth
+    generateText(prompt: ResumeDefinition!): ChatGPTResponse! @requireAuth
   }
 `
