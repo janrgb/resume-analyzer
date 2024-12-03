@@ -1,12 +1,17 @@
 export const schema = gql`
-  type ResumeDefinition {
+  input ResumeDefinition {
     resume_text: String!
     job_description: String!
   }
 
   type ChatGPTResponse {
-    fit_score: Int!
-    feedback: [String!]!
+    error: String
+    fit_score: Int
+    feedback: [String]
+  }
+
+  type ErrorResponse {
+    error: String!
   }
 
   type Query {
