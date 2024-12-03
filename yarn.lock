@@ -8193,7 +8193,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@whatwg-node/fetch@npm:^0.10.0":
+"@whatwg-node/fetch@npm:^0.10.0, @whatwg-node/fetch@npm:^0.10.1":
   version: 0.10.1
   resolution: "@whatwg-node/fetch@npm:0.10.1"
   dependencies:
@@ -8703,6 +8703,7 @@ __metadata:
     "@types/bcrypt": "npm:^5"
     "@types/jsonwebtoken": "npm:^9"
     "@types/mime-types": "npm:^2"
+    "@whatwg-node/fetch": "npm:^0.10.1"
     bcrypt: "npm:^5.1.1"
     graphql-upload: "npm:^17.0.0"
     jsonwebtoken: "npm:^9.0.2"
