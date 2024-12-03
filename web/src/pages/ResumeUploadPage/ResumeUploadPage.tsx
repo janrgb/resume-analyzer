@@ -6,7 +6,7 @@ import { isValidElement, useState } from 'react'
 import Spinner from 'src/components/Spinner/Spinner'
 import { navigate } from '@redwoodjs/router'
 
-const UPLOAD_RESUME = gql`
+export const UPLOAD_RESUME = gql`
   mutation ResumeUploadMutation ($input: File!) {
     resumeUpload(input: $input) {
       message
@@ -16,7 +16,7 @@ const UPLOAD_RESUME = gql`
   }
 `
 
-const UPLOAD_DESC = gql`
+export const UPLOAD_DESC = gql`
   mutation UploadDescriptionMutation ($input: JobDescription!) {
     uploadDescription(input: $input) {
       message
@@ -198,7 +198,7 @@ const ResumeUploadPage = () => {
                 {MAX_CHAR_COUNT - jobDescription.length} characters remaining
               </p>
 
-              <Submit className="button" disabled={!isFileValid || !isJobDescriptionValid}>Upload</Submit>
+              <Submit data-testid="resume-upload" className="button" disabled={!isFileValid || !isJobDescriptionValid}>Upload</Submit>
             </Form>
         </div>
       )}
