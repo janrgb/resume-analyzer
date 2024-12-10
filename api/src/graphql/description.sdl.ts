@@ -8,6 +8,7 @@ export const schema = gql`
     message: String
     status: String!
     error: String
+    the_desc: String
   }
 
   type Mutation {

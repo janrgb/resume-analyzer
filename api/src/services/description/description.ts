@@ -2,8 +2,7 @@ import type { MutationResolvers } from 'types/graphql'
 import { tempStorage, clearSessionData } from '../upload/upload'
 
 export const uploadDescription: MutationResolvers['uploadDescription'] = ({ input }) => {
-  const sessionID = "session-id-example"
-  const { content } = input
+  const { content, sessionID } = input
 
   // Clean the text.
   const cleanContent = content.trim()
@@ -24,6 +23,7 @@ export const uploadDescription: MutationResolvers['uploadDescription'] = ({ inpu
 
   return {
     status: "success",
-    message: "Job description submitted successfully."
+    message: "Job description submitted successfully.",
+    the_desc: content,
   }
 }

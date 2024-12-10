@@ -1,7 +1,12 @@
 import { extractTextFromPDF } from 'src/lib/pdfUtils'
 import type { MutationResolvers } from 'types/graphql'
 
-export const tempStorage: Record<string, {resumeText?: string, jobDescription?: string }> = {}
+interface MyResume {
+  resumeText: string,
+  jobDescription: string
+}
+const storage_list: MyResume[] = []
+export const tempStorage: Record<string, { resumeText?: string, jobDescription? : string }> = {}
 
 // Clear session data.
 export const clearSessionData = (sessionID: string) => {
@@ -12,8 +17,6 @@ export const clearSessionData = (sessionID: string) => {
 export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input }) => {
   const { file, sessionID } = input
   const { name, type, size } = file
-  console.log("HRER")
-
 
   // Validate file type.
   if (type !== 'application/pdf') {
@@ -29,7 +32,7 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
   if (size > MAX_FILE_SIZE) {
     return {
       status: 'error',
-      error: 'File exceeds maximum limit of 2MB.'
+      error: 'File exceeds maximum limit of 2MB.',
     }
   }
 
@@ -45,12 +48,13 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
 
     return {
       message: 'Resume uploaded successfully.',
-      status: 'success'
+      status: 'success',
+      the_resume: text,
     }
   } catch (error) {
     return {
       status: 'error',
-      error: 'Failed to process the PDF. Please try again.'
+      error: 'Failed to process the PDF. Please try again.',
     }
   }
 }

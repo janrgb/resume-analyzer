@@ -1,4 +1,3 @@
-import type { QueryResolvers } from 'types/graphql'
 import { OpenAI } from 'openai'
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -22,7 +21,7 @@ export const generateText = async ({ prompt }) => {
   const KeywordsMatched = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k",
     messages: [
-      { role: "assistant", content: `Please generate an array of one-word matched keywords in JSON format based on the resume: ${prompt.resume_text.slice(0, 10000)}. Respond only with a valid JSON array of one-word strings, e.g., ["Python", "AWS", "Azure"].` }
+      { role: "assistant", content: `Please generate an array of one-word matched keywords in JSON format based on the job description: ${prompt.job_description.slice(0, 10000)}. Respond only with a valid JSON array of one-word strings, e.g., ["Python", "AWS", "Azure"].` }
     ]
   })
 

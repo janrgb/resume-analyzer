@@ -4,6 +4,7 @@ export const schema = gql`
     message: String
     status: String!
     error: String
+    the_resume: String
   }
 
   input UploadInput {
