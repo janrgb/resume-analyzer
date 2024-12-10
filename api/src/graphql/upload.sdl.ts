@@ -6,7 +6,12 @@ export const schema = gql`
     error: String
   }
 
+  input UploadInput {
+    file: File!
+    sessionID: String!
+  }
+
   type Mutation {
-    resumeUpload(input: File!): UploadResponse! @requireAuth
+    resumeUpload(input: UploadInput!): UploadResponse! @requireAuth
   }
 `

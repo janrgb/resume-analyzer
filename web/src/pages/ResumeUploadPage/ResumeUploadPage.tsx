@@ -7,7 +7,7 @@ import Spinner from 'src/components/Spinner/Spinner'
 import { navigate } from '@redwoodjs/router'
 
 export const UPLOAD_RESUME = gql`
-  mutation ResumeUploadMutation ($input: File!) {
+  mutation ResumeUploadMutation ($input: UploadInput!) {
     resumeUpload(input: $input) {
       message
       status

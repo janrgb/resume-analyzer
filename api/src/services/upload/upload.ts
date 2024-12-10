@@ -10,9 +10,10 @@ export const clearSessionData = (sessionID: string) => {
 
 // Handle resume upload.
 export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input }) => {
-  const sessionID = 'session-id-example'
+  const { file, sessionID } = input
+  const { name, type, size } = file
   console.log("HRER")
-  const { name, size, type } = input
+
 
   // Validate file type.
   if (type !== 'application/pdf') {
@@ -34,7 +35,7 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
 
   // Extract text from the PDF.
   try {
-    const text = await extractTextFromPDF(input)
+    const text = await extractTextFromPDF(file)
 
     // Store to session.
     if (!tempStorage[sessionID]) {
