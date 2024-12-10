@@ -1,6 +1,7 @@
 export const schema = gql`
   input JobDescription {
-    content: String
+    content: String,
+    sessionID: String!
   }
 
   type DescriptionResponse {

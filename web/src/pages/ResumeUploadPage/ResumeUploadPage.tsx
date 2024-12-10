@@ -140,7 +140,10 @@ const ResumeUploadPage = () => {
         // Send an resumeUpload mutation.
         await resumeUpload({
           variables: {
-            input: file
+            input: {
+              file: file,
+              sessionID: localStorage.getItem('token'),
+            }
           }
         })
       }
@@ -150,7 +153,8 @@ const ResumeUploadPage = () => {
       await uploadDescription({
         variables: {
           input: {
-            content: jobDescription
+            content: jobDescription,
+            sessionID: localStorage.getItem('token')
           }
         }
       })

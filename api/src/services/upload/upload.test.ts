@@ -13,7 +13,10 @@ describe('File Upload Tests', () => {
     const realFile = new File([fs.readFileSync(validFile)], 'test.pdf', { type: mime.lookup(validFile).toString() })
 
     const result = await resumeUpload({
-      input: realFile
+      input: {
+        file: realFile,
+        sessionID: 'sample'
+      }
     })
 
     expect(result.message).toBe("Resume uploaded successfully.")
@@ -23,7 +26,10 @@ describe('File Upload Tests', () => {
   it('should fail because size is too large', async () => {
     const realFile = new File([fs.readFileSync(invalidFile)], 'bosch.pdf', { type: mime.lookup(invalidFile).toString() })
     const result = await resumeUpload({
-      input: realFile
+      input: {
+        file: realFile,
+        sessionID: 'sample',
+      }
     })
 
     expect(result.error).toBe("File exceeds maximum limit of 2MB.")
@@ -33,7 +39,10 @@ describe('File Upload Tests', () => {
   it('should fail because file type is not pdf', async () => {
     const realFile = new File([fs.readFileSync(superInvalidFile)], 'guh.png', { type: mime.lookup(superInvalidFile).toString() })
     const result = await resumeUpload({
-      input: realFile
+      input: {
+        file: realFile,
+        sessionID: 'sample',
+      }
     })
 
     expect(result.error).toBe("Invalid file type. Only PDF files are allowed.")
