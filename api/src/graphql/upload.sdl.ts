@@ -1,4 +1,11 @@
 export const schema = gql`
+  type TempStorage {
+    resumeText: String
+  }
+
+  type Query {
+    getTempStorage(sessionID: String!): TempStorage @requireAuth
+  }
 
   type UploadResponse {
     message: String
@@ -9,4 +16,5 @@ export const schema = gql`
   type Mutation {
     resumeUpload(input: File!): UploadResponse! @requireAuth
   }
+    
 `

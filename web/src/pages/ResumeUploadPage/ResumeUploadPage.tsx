@@ -5,6 +5,9 @@ import './ResumeUploadPage.css'
 import { isValidElement, useState } from 'react'
 import Spinner from 'src/components/Spinner/Spinner'
 import { navigate } from '@redwoodjs/router'
+import { tempStorage } from 'api/src/services/upload/upload'
+import pdfParse from 'pdf-parse'
+import { useQuery } from '@redwoodjs/web'
 
 export const UPLOAD_RESUME = gql`
   mutation ResumeUploadMutation ($input: File!) {
@@ -22,6 +25,13 @@ export const UPLOAD_DESC = gql`
       message
       status
       error
+    }
+  }
+`
+const GET_TEMP_STORAGE = gql`
+  query GetTempStorage($sessionID: String!) {
+    getTempStorage(sessionID: $sessionID) {
+      resumeText
     }
   }
 `
@@ -80,6 +90,21 @@ const ResumeUploadPage = () => {
       alert(`Unexpected error: ${error.message}`)
     }
   })
+  // Fetch temp storage using the useQuery hook
+  const { data, loading: queryLoading, error: queryError } = useQuery(GET_TEMP_STORAGE, {
+    variables: { sessionID: 'session-id-example' }, // Replace with your sessionID
+  })
+
+  if (queryLoading) {
+    console.log('Loading temp storage...');
+  } else if (data) {
+    console.log('THIS IS THE FRONTEND TEMPSTORAGE')
+    console.log('Temp storage data:', data.getTempStorage);
+  }
+  if (queryError) {
+    console.error('Error fetching temp storage:', queryError);
+  }
+  
 
   // File upload validation state.
   const [isFileValid, setIsFileValid] = useState(false)

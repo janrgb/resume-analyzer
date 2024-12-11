@@ -1,5 +1,6 @@
 import { extractTextFromPDF } from 'src/lib/pdfUtils'
 import type { MutationResolvers } from 'types/graphql'
+import { QueryResolvers } from 'types/graphql'
 
 export const tempStorage: Record<string, {resumeText?: string, jobDescription?: string }> = {}
 
@@ -11,7 +12,7 @@ export const clearSessionData = (sessionID: string) => {
 // Handle resume upload.
 export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input }) => {
   const sessionID = 'session-id-example'
-  console.log("HRER")
+
   const { name, size, type } = input
 
   // Validate file type.
@@ -35,13 +36,13 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
   // Extract text from the PDF.
   try {
     const text = await extractTextFromPDF(input)
-
+    console.log("Extracted Text from PDF:", text)
     // Store to session.
     if (!tempStorage[sessionID]) {
       tempStorage[sessionID] = {}
     }
     tempStorage[sessionID].resumeText = text
-
+    console.log("TEMPSTORAGE INFO:",tempStorage)
     return {
       message: 'Resume uploaded successfully.',
       status: 'success'
@@ -51,5 +52,21 @@ export const resumeUpload: MutationResolvers['resumeUpload'] = async ({ input })
       status: 'error',
       error: 'Failed to process the PDF. Please try again.'
     }
+  }
+  
+}
+
+export const getTempStorage: QueryResolvers['getTempStorage'] = () => {
+  const sessionID = 'session-id-example'; // Hardcoded session ID
+  console.log(`Fetching temp storage for session: ${sessionID}`); // Log session ID to verify.
+
+  const sessionData = tempStorage[sessionID];
+
+  if (sessionData) {
+    return {
+      resumeText: sessionData.resumeText,
+    };
+  } else {
+    throw new Error('No data found for this session.');
   }
 }
