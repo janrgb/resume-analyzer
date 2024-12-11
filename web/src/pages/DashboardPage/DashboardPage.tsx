@@ -1,5 +1,5 @@
-import { Metadata, useQuery } from '@redwoodjs/web'
-import { Fragment, useState } from 'react'
+import { Metadata, useQuery, useMutation } from '@redwoodjs/web'
+import { Fragment, useEffect, useState } from 'react'
 import PrivateRoute from 'src/components/PrivateRoute/PrivateRoute'
 import './DashboardPage.css'
 import Spinner from 'src/components/Spinner/Spinner'
@@ -8,14 +8,17 @@ import Spinner from 'src/components/Spinner/Spinner'
 type MockData = {
   fitScore: number
   matchedSkills: string[]
-  suggestions: string[]
+  feedback: { missing_keywords: string[], suggestions: string[] }
 }
 
 // Default mock data if localStorage values are missing
 const defaultMockData: MockData = {
-  fitScore: 50,
-  matchedSkills: ['JavaScript', 'HTML', 'CSS'],
-  suggestions: ['Add TypeScript', 'Improve formatting', 'Needs to Lock In'],
+  fitScore: 0,
+  matchedSkills: ['None'],
+  feedback: {
+    missing_keywords: ['None'],
+    suggestions: ['None']
+  },
 }
 
 // Call openAI API and get the fit score, feedback, and matched keywords.
@@ -29,16 +32,45 @@ export const RETRIEVE_CHATGPT = gql`
   }
 `
 
+// Call our algorithms for refining the chat-gpt outputs.
+export const REFINE_CHATGPT = gql`
+  mutation RefineInputMutation($input: ResumeStatistics!) {
+    refineInput(input: $input) {
+      refined_score
+      refined_feedback
+      refined_keywords
+    }
+  }
+`
+
 const DashboardPage = () => {
   // Retrieve resumeText and jobDescriptionText from localStorage.
-  const resumeText = localStorage.getItem('resumeText')
-  const jobDescriptionText = localStorage.getItem('jobDescriptionText')
+  const resumeText = localStorage.getItem('resumeText') || ''
+  const jobDescriptionText = localStorage.getItem('jobDescriptionText') || ''
 
-  // State for mock data
+  // State for mock data and spinner
   const [mockData, setMockData] = useState<MockData>(defaultMockData)
+  const [loading, setLoading] = useState(false)
+
+  // refineInput onComplete. Set mockData.
+  const [refineInput] = useMutation(REFINE_CHATGPT, {
+    onCompleted: (data) => {
+      const { refined_score, refined_feedback, refined_keywords } = data.refineInput
+      setMockData({
+        fitScore: refined_score,
+        matchedSkills: refined_keywords,
+        feedback: refined_feedback
+      })
+      setLoading(false)
+    },
+    onError: (error) => {
+      alert(`Unexpected error occurred: ${error.message}`)
+      setLoading(false)
+    }
+  })
 
   // Only call the query if both resumeText and jobDescriptionText are available
-  const { data, loading, error } = useQuery(RETRIEVE_CHATGPT, {
+  const { data, error } = useQuery(RETRIEVE_CHATGPT, {
     variables: {
       prompt: {
         resume_text: resumeText || '',
@@ -47,31 +79,30 @@ const DashboardPage = () => {
     },
     skip: !resumeText || !jobDescriptionText, // Skip the query if values are missing
     onCompleted: (data: any) => {
-      console.log('Query complete!: ', data)
-      let { fit_score, feedback, keywords_matched } = data.generateText
-
-      if (!fit_score) {
-        fit_score = 0
-      }
-
-      if (!feedback) {
-        feedback = ['No feedback']
-      }
-
-      if (!keywords_matched) {
-        keywords_matched = ['No keywords']
-      }
-
-      setMockData({
-        fitScore: fit_score,
-        matchedSkills: keywords_matched,
-        suggestions: feedback,
+      const { fit_score = 0, feedback = ['No feedback'], keywords_matched = ['No keywords'] } = data.generateText || {}
+      refineInput({
+        variables: {
+          input: {
+            res_text: resumeText,
+            job_text: jobDescriptionText,
+            raw_score: fit_score,
+            raw_feedback: feedback,
+            raw_keywords: keywords_matched
+          }
+        }
       })
     },
     onError: (error: any) => {
       console.error('Query error: ', error)
+      setLoading(false)
     },
   })
+
+  useEffect(() => {
+    if (resumeText && jobDescriptionText) {
+      setLoading(true)
+    }
+  }, [resumeText, jobDescriptionText])
 
   return (
     <PrivateRoute>
@@ -108,7 +139,7 @@ const DashboardPage = () => {
             <div className="section">
               <h2>Improvement Suggestions</h2>
               <ul>
-                {mockData.suggestions.map(
+                {mockData.feedback.suggestions.map(
                   (suggestion: string, index: number) => (
                     <li key={index}>{suggestion}</li>
                   )

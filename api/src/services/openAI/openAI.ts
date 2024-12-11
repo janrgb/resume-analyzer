@@ -14,7 +14,7 @@ export const generateText = async ({ prompt }) => {
   const Feedback = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo-16k',
     messages: [
-      { role: "assistant", content: `Please generate an array of one-sentence suggestions in JSON format to improve the resume: ${prompt.resume_text.slice(0, 10000)} based on the following job description: ${prompt.job_description.slice(0, 10000)}. Respond only with a valid JSON array of strings, e.g., ["Suggestion 1", "Suggestion 2"].` },
+      { role: "assistant", content: `Please generate an array of one-sentence suggestions in JSON format to improve the resume: ${prompt.resume_text.slice(0, 10000)} based on the following job description: ${prompt.job_description.slice(0, 10000)}. Prioritize missing components, like missing skills, above all else. Limit yourself to 10 suggestions max. Respond only with a valid JSON array of strings, e.g., ["Suggestion 1", "Suggestion 2"].` },
     ],
   })
 
