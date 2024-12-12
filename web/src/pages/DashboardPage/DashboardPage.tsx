@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from 'react'
 import PrivateRoute from 'src/components/PrivateRoute/PrivateRoute'
 import './DashboardPage.css'
 import Spinner from 'src/components/Spinner/Spinner'
-
+import jsPDF from 'jspdf';
 // Define a type for mockData to ensure type safety
 type MockData = {
   fitScore: number
@@ -146,6 +146,14 @@ const DashboardPage = () => {
                 )}
               </ul>
             </div>
+            <button
+            onClick={() => {
+              console.log("Button clicked!"); 
+              generatePDF(mockData.fitScore, mockData.matchedSkills, mockData.feedback);
+            }}
+            className="download-pdf-btn">
+            Download PDF Report
+            </button>
           </>
         )}
       </div>
@@ -153,4 +161,30 @@ const DashboardPage = () => {
   )
 }
 
+function generatePDF(fitScore, matchedKeywords, feedback) {
+  try {
+    const doc = new jsPDF();
+
+    doc.text("Resume Analysis Report", 10, 10);
+    doc.text(`Fit Score: ${fitScore}%`, 10, 20);
+
+    doc.text("Matched Keywords:", 10, 30);
+    if (Array.isArray(matchedKeywords)) {
+      matchedKeywords.forEach((keyword, index) => {
+        doc.text(`- ${keyword}`, 10, 40 + index * 10);
+      });
+    }
+
+    doc.text("Feedback:", 10, 60);
+    if (Array.isArray(feedback)) {
+      feedback.forEach((item, index) => {
+        doc.text(`- ${item}`, 10, 70 + index * 10);
+      });
+    }
+
+    doc.save("Resume_Analysis_Report.pdf");
+  } catch (error) {
+    console.error("Error generating PDF:", error); 
+  }
+}
 export default DashboardPage
