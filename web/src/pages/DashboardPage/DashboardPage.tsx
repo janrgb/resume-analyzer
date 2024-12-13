@@ -16,8 +16,8 @@ const defaultMockData: MockData = {
   fitScore: 75,
   matchedSkills: ['C#', 'Java', 'Python'],
   feedback: {
-    missing_keywords: ['Excel', 'Rust'],
-    suggestions: ['Needs more work experience', 'Learn some SQL']
+    missing_keywords: ['None'],
+    suggestions: ['Skills improvement: Get better', 'Experience improvement: get more exp', 'Skills improvement: get even better', 'Experience improvement: Get even better']
   },
 }
 
@@ -51,6 +51,8 @@ const DashboardPage = () => {
   // State for mock data and spinner
   const [mockData, setMockData] = useState<MockData>(defaultMockData)
   const [loading, setLoading] = useState(false)
+
+  const [suggestionFilter, setSuggestionFilter] = useState<String>('all')
 
   // refineInput onComplete. Set mockData.
   const [refineInput] = useMutation(REFINE_CHATGPT, {
@@ -96,7 +98,11 @@ const DashboardPage = () => {
       console.error('Query error: ', error)
       setLoading(false)
     },
-  })
+  });
+
+  const setFilter = (e: String) => {
+    setSuggestionFilter(e);
+  }
 
   useEffect(() => {
     if (resumeText && jobDescriptionText) {
@@ -137,13 +143,29 @@ const DashboardPage = () => {
             </div>
 
             <div className="section">
+              <div>
+              Suggestion Types :
+              <select onChange={(e) => setFilter(e.target.value)}>
+              <option value="all">All</option>
+              <option value="skills">Skills</option>
+              <option value="experience">Experience</option>
+            </select>
+              </div>
               <h2>Improvement Suggestions</h2>
               <ul>
-                {mockData.feedback.suggestions.map(
-                  (suggestion: string, index: number) => (
-                    <li key={index}>{suggestion}</li>
-                  )
-                )}
+              {mockData.feedback.suggestions
+              .filter((suggestion: string) => {
+                if (suggestionFilter === 'skills') {
+                  return suggestion.startsWith('Skill');
+                }
+                if (suggestionFilter === 'experience') {
+                  return suggestion.startsWith('Experience');
+                }
+                return true; // If 'all', return all suggestions
+              })
+              .map((suggestion: string, index: number) => (
+                <li key={index}>{suggestion}</li>
+              ))}
               </ul>
             </div>
             <button
