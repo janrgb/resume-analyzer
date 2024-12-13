@@ -165,9 +165,18 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
   try {
     const doc = new jsPDF();
 
+    // Get the current date and time
+    const now = new Date();
+    const timestamp = now.toLocaleString(); // example "12/13/2024, 10:30:00 AM"
+
     // Title and separator
     doc.setFontSize(18);
     doc.text("Resume Analysis Report", 105, 20, { align: "center" });
+
+    // Add timestamp in the header (aligned to the far right)
+    doc.setFontSize(10);
+    doc.text(timestamp, 200, 20, { align: "right" });
+
     doc.setLineWidth(0.5);
     doc.line(10, 25, 200, 25);
 
