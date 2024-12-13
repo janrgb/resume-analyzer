@@ -13,11 +13,11 @@ type MockData = {
 
 // Default mock data if localStorage values are missing
 const defaultMockData: MockData = {
-  fitScore: 0,
-  matchedSkills: ['None'],
+  fitScore: 75,
+  matchedSkills: ['C#', 'Java', 'Python'],
   feedback: {
-    missing_keywords: ['None'],
-    suggestions: ['None']
+    missing_keywords: ['Excel', 'Rust'],
+    suggestions: ['Needs more work experience', 'Learn some SQL']
   },
 }
 
@@ -165,26 +165,67 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
   try {
     const doc = new jsPDF();
 
-    doc.text("Resume Analysis Report", 10, 10);
-    doc.text(`Fit Score: ${fitScore}%`, 10, 20);
+    // Title and separator
+    doc.setFontSize(18);
+    doc.text("Resume Analysis Report", 105, 20, { align: "center" });
+    doc.setLineWidth(0.5);
+    doc.line(10, 25, 200, 25);
 
-    doc.text("Matched Keywords:", 10, 30);
-    if (Array.isArray(matchedKeywords)) {
-      matchedKeywords.forEach((keyword, index) => {
-        doc.text(`- ${keyword}`, 10, 40 + index * 10);
+    // Fit Score section
+    doc.setFontSize(14);
+    doc.text("Fit Score", 10, 35);
+    doc.setFontSize(12);
+    doc.text(`${fitScore}%`, 20, 45);
+
+    // Matched Skills section
+    doc.setFontSize(14);
+    doc.text("Matched Skills", 10, 55);
+    if (Array.isArray(matchedKeywords) && matchedKeywords.length > 0) {
+      doc.setFontSize(12);
+      matchedKeywords.forEach((skill, index) => {
+        doc.text(`- ${skill}`, 20, 65 + index * 10);
       });
+    } else {
+      doc.setFontSize(12);
+      doc.text("No skills matched.", 20, 65);
     }
 
-    doc.text("Feedback:", 10, 60);
-    if (Array.isArray(feedback)) {
-      feedback.forEach((item, index) => {
-        doc.text(`- ${item}`, 10, 70 + index * 10);
-      });
+    // Feedback section
+    const feedbackStartY = 75 + (matchedKeywords.length || 1) * 10;
+    doc.setFontSize(14);
+    doc.text("Feedback", 10, feedbackStartY);
+
+    if (feedback && (feedback.missing_keywords || feedback.suggestions)) {
+      doc.setFontSize(12);
+
+      // Missing Keywords
+      let y = feedbackStartY + 10;
+      if (Array.isArray(feedback.missing_keywords) && feedback.missing_keywords.length > 0) {
+        doc.text("Missing Keywords:", 20, y);
+        feedback.missing_keywords.forEach((keyword, index) => {
+          doc.text(`- ${keyword}`, 30, y + (index + 1) * 10);
+        });
+        y += feedback.missing_keywords.length * 10 + 10;
+      }
+
+      // Suggestions
+      if (Array.isArray(feedback.suggestions) && feedback.suggestions.length > 0) {
+        doc.text("Suggestions:", 20, y);
+        feedback.suggestions.forEach((suggestion, index) => {
+          doc.text(`- ${suggestion}`, 30, y + (index + 1) * 10);
+        });
+      }
+    } else {
+      doc.setFontSize(12);
+      doc.text("No feedback available.", 20, feedbackStartY + 10);
     }
 
+    // Save the PDF
     doc.save("Resume_Analysis_Report.pdf");
   } catch (error) {
-    console.error("Error generating PDF:", error); 
+    console.error("Error generating PDF:", error);
   }
 }
+
+
 export default DashboardPage
