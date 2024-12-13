@@ -3,7 +3,7 @@ import { Fragment, useEffect, useState } from 'react'
 import PrivateRoute from 'src/components/PrivateRoute/PrivateRoute'
 import './DashboardPage.css'
 import Spinner from 'src/components/Spinner/Spinner'
-
+import jsPDF from 'jspdf';
 // Define a type for mockData to ensure type safety
 type MockData = {
   fitScore: number
@@ -13,11 +13,11 @@ type MockData = {
 
 // Default mock data if localStorage values are missing
 const defaultMockData: MockData = {
-  fitScore: 0,
-  matchedSkills: ['None'],
+  fitScore: 75,
+  matchedSkills: ['C#', 'Java', 'Python'],
   feedback: {
-    missing_keywords: ['None'],
-    suggestions: ['None']
+    missing_keywords: ['Excel', 'Rust'],
+    suggestions: ['Needs more work experience', 'Learn some SQL']
   },
 }
 
@@ -146,11 +146,95 @@ const DashboardPage = () => {
                 )}
               </ul>
             </div>
+            <button
+            onClick={() => {
+              console.log("Button clicked!"); 
+              generatePDF(mockData.fitScore, mockData.matchedSkills, mockData.feedback);
+            }}
+            className="download-pdf-btn">
+            Download PDF Report
+            </button>
           </>
         )}
       </div>
     </PrivateRoute>
   )
 }
+
+function generatePDF(fitScore, matchedKeywords, feedback) {
+  try {
+    const doc = new jsPDF();
+
+    // Get the current date and time
+    const now = new Date();
+    const timestamp = now.toLocaleString(); // example "12/13/2024, 10:30:00 AM"
+
+    // Title and separator
+    doc.setFontSize(18);
+    doc.text("Resume Analysis Report", 105, 20, { align: "center" });
+
+    // Add timestamp in the header (aligned to the far right)
+    doc.setFontSize(10);
+    doc.text(timestamp, 200, 20, { align: "right" });
+
+    doc.setLineWidth(0.5);
+    doc.line(10, 25, 200, 25);
+
+    // Fit Score section
+    doc.setFontSize(14);
+    doc.text("Fit Score", 10, 35);
+    doc.setFontSize(12);
+    doc.text(`${fitScore}%`, 20, 45);
+
+    // Matched Skills section
+    doc.setFontSize(14);
+    doc.text("Matched Skills", 10, 55);
+    if (Array.isArray(matchedKeywords) && matchedKeywords.length > 0) {
+      doc.setFontSize(12);
+      matchedKeywords.forEach((skill, index) => {
+        doc.text(`- ${skill}`, 20, 65 + index * 10);
+      });
+    } else {
+      doc.setFontSize(12);
+      doc.text("No skills matched.", 20, 65);
+    }
+
+    // Feedback section
+    const feedbackStartY = 75 + (matchedKeywords.length || 1) * 10;
+    doc.setFontSize(14);
+    doc.text("Feedback", 10, feedbackStartY);
+
+    if (feedback && (feedback.missing_keywords || feedback.suggestions)) {
+      doc.setFontSize(12);
+
+      // Missing Keywords
+      let y = feedbackStartY + 10;
+      if (Array.isArray(feedback.missing_keywords) && feedback.missing_keywords.length > 0) {
+        doc.text("Missing Keywords:", 20, y);
+        feedback.missing_keywords.forEach((keyword, index) => {
+          doc.text(`- ${keyword}`, 30, y + (index + 1) * 10);
+        });
+        y += feedback.missing_keywords.length * 10 + 10;
+      }
+
+      // Suggestions
+      if (Array.isArray(feedback.suggestions) && feedback.suggestions.length > 0) {
+        doc.text("Suggestions:", 20, y);
+        feedback.suggestions.forEach((suggestion, index) => {
+          doc.text(`- ${suggestion}`, 30, y + (index + 1) * 10);
+        });
+      }
+    } else {
+      doc.setFontSize(12);
+      doc.text("No feedback available.", 20, feedbackStartY + 10);
+    }
+
+    // Save the PDF
+    doc.save("Resume_Analysis_Report.pdf");
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+  }
+}
+
 
 export default DashboardPage
