@@ -7,7 +7,7 @@ export const generateText = async ({ prompt }) => {
   const FitScore = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo-16k',
     messages: [
-      { role: "assistant", content: `Please generate a fit score between 0 and 100 for the following resume text, where the fit score is a measure of how good this resume: ${prompt.resume_text.slice(0,10000)} is matching this job description: ${prompt.job_description.slice(0,10000)} Only respond with the fit score: ` },
+      { role: "assistant", content: `Please generate a fit score between 0 and 100 for the following resume text, where the fit score is a measure of how good this resume: ${prompt.resume_text.slice(0,10000)} is matching this job description: ${prompt.job_description.slice(0,10000)} Only respond with the fit score. Otherwise, respond with 0. Never respond with anything other than a number between and including 0 and 100` },
     ],
   })
 
@@ -25,9 +25,7 @@ export const generateText = async ({ prompt }) => {
     ]
   })
 
-
-
-  let feedbackArray: String[] = []
+  let feedbackArray: string[] = []
   try {
     feedbackArray = JSON.parse(Feedback?.choices[0].message?.content || '[]')
     if (!Array.isArray(feedbackArray)){

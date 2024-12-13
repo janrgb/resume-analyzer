@@ -52,7 +52,6 @@ const ResumeUploadPage = () => {
       if (status === 'success') {
         setResumeSuccess(true)
         const { message, the_resume } = data.resumeUpload
-        console.log(the_resume)
         localStorage.setItem('resumeText', the_resume)
         alert(message)
       } else {
@@ -73,7 +72,6 @@ const ResumeUploadPage = () => {
       if (status === 'success'){
         setDescriptionSuccess(true)
         const { message, the_desc } = data.uploadDescription
-        console.log(the_desc)
         localStorage.setItem('jobDescriptionText', the_desc)
         alert(message)
       } else {

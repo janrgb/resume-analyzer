@@ -82,6 +82,9 @@ const DashboardPage = () => {
     skip: !resumeText || !jobDescriptionText, // Skip the query if values are missing
     onCompleted: (data: any) => {
       const { fit_score = 0, feedback = ['No feedback'], keywords_matched = ['No keywords'] } = data.generateText || {}
+      console.log("Fit score: ", fit_score)
+      console.log("Feedback: ", feedback)
+      console.log("Keywords: ", keywords_matched)
       refineInput({
         variables: {
           input: {
@@ -170,7 +173,7 @@ const DashboardPage = () => {
             </div>
             <button
             onClick={() => {
-              console.log("Button clicked!"); 
+              console.log("Button clicked!");
               generatePDF(mockData.fitScore, mockData.matchedSkills, mockData.feedback);
             }}
             className="download-pdf-btn">
