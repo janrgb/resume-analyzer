@@ -192,14 +192,16 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
 
     // Get the current date and time
     const now = new Date();
-    const timestamp = now.toLocaleString(); // example "12/13/2024, 10:30:00 AM"
+    const timestamp = now.toLocaleString();
 
     // Title and separator
     doc.setFontSize(18);
+    doc.setFont("helvetica", "bold");
     doc.text("Resume Analysis Report", 105, 20, { align: "center" });
 
     // Add timestamp in the header (aligned to the far right)
     doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
     doc.text(timestamp, 200, 20, { align: "right" });
 
     doc.setLineWidth(0.5);
@@ -207,46 +209,60 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
 
     // Fit Score section
     doc.setFontSize(14);
-    doc.text("Fit Score", 10, 35);
-    doc.setFontSize(12);
-    doc.text(`${fitScore}%`, 20, 45);
+    doc.setFont("helvetica", "bold");
+    doc.text("Fit Score:", 10, 35);
+    doc.setFont("helvetica", "normal");
+    doc.text(`${fitScore}%`, 35, 35);
 
     // Matched Skills section
     doc.setFontSize(14);
-    doc.text("Matched Skills", 10, 55);
+    doc.setFont("helvetica", "bold");
+    doc.text("Matched Skills", 10, 50);
+    doc.setFont("helvetica", "normal");
     if (Array.isArray(matchedKeywords) && matchedKeywords.length > 0) {
       doc.setFontSize(12);
       matchedKeywords.forEach((skill, index) => {
-        doc.text(`- ${skill}`, 20, 65 + index * 10);
+        doc.text(`- ${skill}`, 20, 60 + index * 7);
       });
     } else {
       doc.setFontSize(12);
-      doc.text("No skills matched.", 20, 65);
+      doc.text("No skills matched.", 20, 55);
     }
 
     // Feedback section
-    const feedbackStartY = 75 + (matchedKeywords.length || 1) * 10;
+    const feedbackStartY = 55 + (matchedKeywords.length || 1) * 10;
     doc.setFontSize(14);
+    doc.setFont("helvetica", "bold");
     doc.text("Feedback", 10, feedbackStartY);
 
     if (feedback && (feedback.missing_keywords || feedback.suggestions)) {
       doc.setFontSize(12);
 
       // Missing Keywords
-      let y = feedbackStartY + 10;
+      let y = feedbackStartY + 8;
       if (Array.isArray(feedback.missing_keywords) && feedback.missing_keywords.length > 0) {
+        doc.setFont("helvetica", "normal");
         doc.text("Missing Keywords:", 20, y);
+        doc.setFont("helvetica", "normal");
         feedback.missing_keywords.forEach((keyword, index) => {
-          doc.text(`- ${keyword}`, 30, y + (index + 1) * 10);
+          doc.text(`- ${keyword}`, 30, y + (index + 1) * 7);
         });
-        y += feedback.missing_keywords.length * 10 + 10;
+        y += feedback.missing_keywords.length * 10 + 5;
       }
 
       // Suggestions
       if (Array.isArray(feedback.suggestions) && feedback.suggestions.length > 0) {
+        doc.setFont("helvetica", "normal");
         doc.text("Suggestions:", 20, y);
-        feedback.suggestions.forEach((suggestion, index) => {
-          doc.text(`- ${suggestion}`, 30, y + (index + 1) * 10);
+        y += 10;
+        feedback.suggestions.forEach((suggestion) => {
+          // Wrap long text
+          const wrappedText = doc.splitTextToSize(suggestion, 160); 
+          wrappedText.forEach((line, lineIndex) => {
+            const lineText = lineIndex === 0 ? `- ${line}` : `  ${line}`; // Add '-' only to the first line
+            doc.text(lineText, 30, y);
+            y += 6; 
+          });
         });
       }
     } else {
@@ -260,6 +276,5 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
     console.error("Error generating PDF:", error);
   }
 }
-
 
 export default DashboardPage
