@@ -18,7 +18,7 @@ const defaultMockData: MockData = {
   matchedSkills: ['C#', 'Java', 'Python'],
   feedback: {
     missing_keywords: ['None'],
-    suggestions: ['Skills improvement: Get better', 'Experience improvement: get more exp', 'Skills improvement: get even better', 'Experience improvement: Get even better']
+    suggestions: ['Skills improvement: Get better', 'Experience improvement: get more exp', 'Skills improvement: get even better', 'Experience improvement: Get even better', 'Formatting improvement: rewrite this resume lil bro']
   },
 }
 
@@ -154,6 +154,7 @@ const DashboardPage = () => {
               <option value="all">All</option>
               <option value="skills">Skills</option>
               <option value="experience">Experience</option>
+              <option value="format">Formatting</option>
             </select>
               </div>
               <h2>Improvement Suggestions</h2>
@@ -165,6 +166,9 @@ const DashboardPage = () => {
                 }
                 if (suggestionFilter === 'experience') {
                   return suggestion.startsWith('Experience');
+                }
+                if (suggestionFilter === 'format') {
+                  return suggestion.startsWith('Format');
                 }
                 return true; // If 'all', return all suggestions
               })
