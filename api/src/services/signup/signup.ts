@@ -1,7 +1,7 @@
 import { MutationResolvers } from "types/graphql";
 import { hash } from 'bcrypt'
 
-export const users: Array<{ email: string; password: string; username: string }> = []
+export let users: Array<{ email: string; password: string; username: string }> = []
 
 export const registerUser: MutationResolvers['registerUser'] = async ({ input }) => {
   const { email, password, username } = input
