@@ -18,7 +18,8 @@ export OPENAI_API_KEY="INSERT_OPENAI_API_KEY"
 
 
 ## Installing Yarn
--`npm install global yarn`
+-`npm install global yarn` installs yarn
+
 -`corepack enable` -switches your yarn version to match the project
 
 
