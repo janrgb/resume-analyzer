@@ -112,6 +112,7 @@ const DashboardPage = () => {
 
   return (
     <PrivateRoute>
+      <Metadata title="Resume Analysis"/>
       <div className="dashboard-container">
         <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
         {loading ? (
@@ -170,7 +171,7 @@ const DashboardPage = () => {
             </div>
             <button
             onClick={() => {
-              console.log("Button clicked!"); 
+              console.log("Button clicked!");
               generatePDF(mockData.fitScore, mockData.matchedSkills, mockData.feedback);
             }}
             className="download-pdf-btn">
