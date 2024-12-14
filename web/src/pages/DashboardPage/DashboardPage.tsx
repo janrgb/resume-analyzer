@@ -4,6 +4,7 @@ import PrivateRoute from 'src/components/PrivateRoute/PrivateRoute'
 import './DashboardPage.css'
 import Spinner from 'src/components/Spinner/Spinner'
 import jsPDF from 'jspdf';
+import { Meta } from 'react-router-dom'
 // Define a type for mockData to ensure type safety
 type MockData = {
   fitScore: number
@@ -115,6 +116,7 @@ const DashboardPage = () => {
 
   return (
     <PrivateRoute>
+      <Metadata title="Resume Analysis" description="Resume analysis page"/>
       <div className="dashboard-container">
         <h1 className="font-bold text-3xl">Resume Analysis Dashboard</h1>
         {loading ? (
@@ -257,11 +259,11 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
         y += 10;
         feedback.suggestions.forEach((suggestion) => {
           // Wrap long text
-          const wrappedText = doc.splitTextToSize(suggestion, 160); 
+          const wrappedText = doc.splitTextToSize(suggestion, 160);
           wrappedText.forEach((line, lineIndex) => {
             const lineText = lineIndex === 0 ? `- ${line}` : `  ${line}`; // Add '-' only to the first line
             doc.text(lineText, 30, y);
-            y += 6; 
+            y += 6;
           });
         });
       }

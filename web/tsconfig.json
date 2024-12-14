@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "skipLibCheck": false,
     "rootDirs": [
       "./src",
@@ -39,5 +39,8 @@
     "../.redwood/types/includes/web-*",
     "../types",
     "./types"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

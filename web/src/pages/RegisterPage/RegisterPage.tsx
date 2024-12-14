@@ -124,7 +124,7 @@ const RegisterPage = () => {
             />
             <FieldError name="confirm password" className="error" />
             <div className="separator"></div>
-            <Submit className="button-reg">Sign Up</Submit>
+            <Submit data-testid="submit-sign-up" className="button-reg">Sign Up</Submit>
             <div className="separator"></div>
             <button
               type="button"
