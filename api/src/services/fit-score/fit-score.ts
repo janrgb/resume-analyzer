@@ -1,8 +1,9 @@
 import type { MutationResolvers } from 'types/graphql'
+import { removeStopwords, eng } from 'stopword'
 
 export const refineInput: MutationResolvers['refineInput'] = async ({ input }) => {
   /* Grab the raw values from ChatGPT. */
-  const { res_text, job_text, raw_score, raw_feedback, raw_keywords } = input
+  let { res_text, job_text, raw_score, raw_feedback, raw_keywords } = input
 
   if (res_text === "" || job_text === "") {
     return {
@@ -20,8 +21,10 @@ export const refineInput: MutationResolvers['refineInput'] = async ({ input }) =
   console.log("Job text: ", job_text)
 
   /* Tokenize both res_text and job_text. */
-  const res_text_tokens: string[] = Tokenizer(res_text)
-  const job_text_tokens: string[] = Tokenizer(job_text)
+  const res_text_tokens: string[] = removeStopwords(Tokenizer(res_text), eng)
+  let job_text_tokens: string[] = removeStopwords(Tokenizer(job_text), eng)
+  let job_set_string: Set<string> = new Set(job_text_tokens)
+  job_text_tokens = Array.from(job_set_string)
 
   /* DEBUG */
   console.log("Resume tokens: ", res_text_tokens)
@@ -35,9 +38,10 @@ export const refineInput: MutationResolvers['refineInput'] = async ({ input }) =
   console.log("Missing key words: ", missing_key_words)
 
   /* Algorithmically calculate the fit score. */
-  const refined_score: number = CalculateFitScore(common_key_words.length, job_text_tokens.length)
+  const refined_score: number = CalculateFitScore(common_key_words.length, job_text_tokens.length, raw_score)
 
   /* DEBUG */
+  console.log("Raw score: ", raw_score)
   console.log("Fit score: ", refined_score)
 
   /* Use the missing keywords to come up with suggestions. */
@@ -81,6 +85,8 @@ const Matcher = (array1: string[], array2: string[]) => {
 }
 
 /* Fit Score calculator. */
-const CalculateFitScore = (matched_words: number, total_keywords: number) => {
-  return total_keywords > 0 ? Math.floor((matched_words / total_keywords) * 100) : 0
+const CalculateFitScore = (matched_words: number, total_keywords: number, raw: number) => {
+  console.log("Total keywords: ", total_keywords)
+  console.log("Algorithmic score: ", Math.floor(matched_words / total_keywords * 100))
+  return total_keywords > 0 ? Math.floor((((matched_words / total_keywords) * 100) + raw) / 2) : 0
 }

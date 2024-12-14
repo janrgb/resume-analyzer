@@ -25,7 +25,7 @@ describe('refineInput Mutation Resolver', () => {
     const input = {
       res_text: 'Hello this is a test',
       job_text: 'Hello this is a test',
-      raw_score: 90,
+      raw_score: 100,
       raw_feedback: [],
       raw_keywords: [],
     }
@@ -37,7 +37,7 @@ describe('refineInput Mutation Resolver', () => {
         missing_key_words: [],
         suggestions: [],
       },
-      refined_keywords: ['hello', 'this', 'is', 'a', 'test'],
+      refined_keywords: ['hello', 'test'],
     })
   }),
 
@@ -52,12 +52,12 @@ describe('refineInput Mutation Resolver', () => {
 
     const result = await refineInput({ input })
     expect(result).toEqual({
-      refined_score: 80,
+      refined_score: 75,
       refined_feedback: {
         missing_key_words: ['test'],
         suggestions: [],
       },
-      refined_keywords: ['hello', 'this', 'is', 'a']
+      refined_keywords: ['hello']
     })
   }),
 
@@ -72,18 +72,18 @@ describe('refineInput Mutation Resolver', () => {
 
     const result = await refineInput({ input })
     expect(result).toEqual({
-      refined_score: 80,
+      refined_score: 75,
       refined_feedback: {
         missing_key_words: ['test'],
         suggestions: [],
       },
-      refined_keywords: ['hello', 'this', 'is', 'a']
+      refined_keywords: ['hello']
     })
   })
 
-  it('should return 100 for fitscore', async () => {
+  it('should return 95 for fitscore', async () => {
     const input = {
-      res_text: "Hello this is a test, William!",
+      res_text: "Hello this is a test",
       job_text: "Hello this is a test",
       raw_score: 100,
       raw_feedback: [],
@@ -97,7 +97,7 @@ describe('refineInput Mutation Resolver', () => {
         missing_key_words: [],
         suggestions: [],
       },
-      refined_keywords: ['hello', 'this', 'is', 'a', 'test']
+      refined_keywords: ['hello', 'test']
     })
   })
 })
