@@ -7,7 +7,7 @@ export const generateText = async ({ prompt }) => {
   const FitScore = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo-16k',
     messages: [
-      { role: "assistant", content: `Generate a fit score, with the default score being 0, between 0 and 100 for the following resume: ${prompt.resume_text.slice(0,10000)} based on the following job description: ${prompt.job_description.slice(0,10000)} Only respond with the fit score. Otherwise, respond with 0.` },
+      { role: "assistant", content: `Generate a fit score as a whole number (0-100) for the following resume: "${prompt.resume_text.slice(0, 10000)}" based on the following job description: "${prompt.job_description.slice(0, 10000)}". Respond ONLY with a numeric value (e.g., 85). If you cannot determine a score, respond with 0.` },
     ],
   })
 
@@ -24,6 +24,18 @@ export const generateText = async ({ prompt }) => {
       { role: "assistant", content: `Please generate two arrays of one-word matched keywords in JSON format: a required_skills array and preferred_skills array. It must be based on the following job description: ${prompt.job_description.slice(0, 10000)}. Format these two arrays as two properties of a JSON object. Respond only with a valid JSON object, e.g., {required_skills: ["Python", "AWS", "Azure"], preferred_skills: ["Communication", "Management", "Java"]}.` }
     ]
   })
+
+  let fitScore = 0;
+  try {
+    const fitScoreContent = FitScore?.choices[0]?.message?.content.trim();
+    fitScore = parseInt(fitScoreContent, 10);
+    if (isNaN(fitScore)) {
+      console.error("Invalid Fit Score response:", fitScoreContent);
+      fitScore = 0; // Fallback value
+    }
+  } catch (error) {
+    console.error("Error parsing Fit Score:", error);
+  }
 
   let feedbackArray: string[] = []
   try {
@@ -58,7 +70,7 @@ export const generateText = async ({ prompt }) => {
   }
 
   return {
-      fit_score: parseInt(FitScore?.choices[0]?.message?.content),
+      fit_score: fitScore,
       feedback: feedbackArray,
       keywords_matched: keywordsMatchedObject
   }
