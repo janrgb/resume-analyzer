@@ -32,6 +32,7 @@ export OPENAI_API_KEY="INSERT_OPENAI_API_KEY"
 
 - Use `yarn redwood dev` or `yarn rw dev` to launch the app on localhost.
 - The database may not be synchronized. Use `yarn rw prisma migrate dev` to synchronize it.
+- Check USAGE.md for instructions on using the app.
 
 ## Testing and Documentation
 
