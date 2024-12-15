@@ -4,9 +4,15 @@ export const schema = gql`
     message: String
     status: String!
     error: String
+    the_resume: String
+  }
+
+  input UploadInput {
+    file: File!
+    sessionID: String!
   }
 
   type Mutation {
-    resumeUpload(input: File!): UploadResponse! @requireAuth
+    resumeUpload(input: UploadInput!): UploadResponse! @requireAuth
   }
 `

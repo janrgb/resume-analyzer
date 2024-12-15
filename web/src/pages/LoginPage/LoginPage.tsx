@@ -91,7 +91,7 @@ const LoginPage = () => {
             </div>
 
             <div className="separator"></div>
-            <Submit className="button-login">Log In</Submit>
+            <Submit data-testid='submit-login' className="button-login">Log In</Submit>
             <div className="separator"></div>
             <button
               type="button"
