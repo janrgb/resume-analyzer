@@ -41,7 +41,7 @@ describe('generateText', () => {
         choices: [{ message: { content: '["Suggestion 1", "Suggestion 2"]' } }],
       })
       .mockResolvedValueOnce({
-        choices: [{ message: { content: '["Python", "AI", "ML"]' } }],
+        choices: [{ message: { content: '{"required_skills": ["Python", "AI", "ML"], "preferred_skills": ["Communication"]}' } }],
       })
 
     // Call the function being tested.
@@ -55,7 +55,8 @@ describe('generateText', () => {
     // Check the result!
     expect(result.fit_score).toBe(85)
     expect(result.feedback).toEqual(['Suggestion 1', 'Suggestion 2'])
-    expect(result.keywords_matched).toEqual(['Python', 'AI', 'ML'])
+    expect(result.keywords_matched['required_skills']).toEqual(['Python', 'AI', 'ML'])
+    expect(result.keywords_matched['preferred_skills']).toEqual(['Communication'])
 
     // Verify the mocked method calls.
     expect(mockCreate).toHaveBeenCalledTimes(3)
@@ -98,7 +99,7 @@ describe('generateText', () => {
         choices: [{ message: { content: "trolled" } }],
       })
       .mockResolvedValueOnce({
-        choices: [{ message: { content: '["Python", "AI", "ML"]'} }],
+        choices: [{ message: { content: '{"required_skills": ["Python", "AI", "ML"], "preferred_skills": ["Communication"]}' } }],
       })
 
     // Call the function being tested.

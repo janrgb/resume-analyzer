@@ -8,7 +8,7 @@ export const schema = gql`
     error: String
     fit_score: Int
     feedback: [String]
-    keywords_matched: [String]
+    keywords_matched: JSON
   }
 
   type Query {

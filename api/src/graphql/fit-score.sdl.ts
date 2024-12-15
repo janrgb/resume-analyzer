@@ -4,7 +4,7 @@ export const schema = gql`
     job_text: String
     raw_score: Int
     raw_feedback: [String]
-    raw_keywords: [String]
+    raw_keywords: JSON
   }
 
   type AlgorithmOutput {

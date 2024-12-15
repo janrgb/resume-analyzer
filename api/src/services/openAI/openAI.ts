@@ -7,7 +7,7 @@ export const generateText = async ({ prompt }) => {
   const FitScore = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo-16k',
     messages: [
-      { role: "assistant", content: `Please generate a fit score between 0 and 100 for the following resume text, where the fit score is a measure of how good this resume: ${prompt.resume_text.slice(0,10000)} is matching this job description: ${prompt.job_description.slice(0,10000)} Only respond with the fit score. Otherwise, respond with 0. Never respond with anything other than a number between and including 0 and 100` },
+      { role: "assistant", content: `Generate a fit score, with the default score being 0, between 0 and 100 for the following resume: ${prompt.resume_text.slice(0,10000)} based on the following job description: ${prompt.job_description.slice(0,10000)} Only respond with the fit score. Otherwise, respond with 0.` },
     ],
   })
 
@@ -21,7 +21,7 @@ export const generateText = async ({ prompt }) => {
   const KeywordsMatched = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k",
     messages: [
-      { role: "assistant", content: `Please generate an array of one-word matched keywords in JSON format based on the job description: ${prompt.job_description.slice(0, 10000)}. Respond only with a valid JSON array of one-word strings, e.g., ["Python", "AWS", "Azure"].` }
+      { role: "assistant", content: `Please generate two arrays of one-word matched keywords in JSON format: a required_skills array and preferred_skills array. It must be based on the following job description: ${prompt.job_description.slice(0, 10000)}. Format these two arrays as two properties of a JSON object. Respond only with a valid JSON object, e.g., {required_skills: ["Python", "AWS", "Azure"], preferred_skills: ["Communication", "Management", "Java"]}.` }
     ]
   })
 
@@ -39,10 +39,14 @@ export const generateText = async ({ prompt }) => {
     }
   }
 
-  let keywordsMatchedArray: string[] = []
+  let keywordsMatchedObject: JSON
   try {
-    keywordsMatchedArray = JSON.parse(KeywordsMatched?.choices[0].message?.content || '[]')
-    if (!Array.isArray(keywordsMatchedArray)){
+    keywordsMatchedObject = JSON.parse(KeywordsMatched?.choices[0].message?.content || '{}')
+    if (
+      typeof keywordsMatchedObject !== 'object' ||
+      !Array.isArray(keywordsMatchedObject['required_skills']) ||
+      !Array.isArray(keywordsMatchedObject['preferred_skills'])
+    ) {
       return {
         error: "Unable to process request. Please try again later."
       }
@@ -53,10 +57,9 @@ export const generateText = async ({ prompt }) => {
     }
   }
 
-  console.log(prompt)
   return {
       fit_score: parseInt(FitScore?.choices[0]?.message?.content),
       feedback: feedbackArray,
-      keywords_matched: keywordsMatchedArray
+      keywords_matched: keywordsMatchedObject
   }
 }
