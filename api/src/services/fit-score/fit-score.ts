@@ -35,10 +35,12 @@ export const refineInput: MutationResolvers['refineInput'] = async ({ input }) =
 
   /* DEBUG */
   console.log("Common key words: ", common_key_words)
+  console.log("Required key words: ", raw_keywords['required_skills'])
+  console.log("Preferred key words: ", raw_keywords['preferred_skills'])
   console.log("Missing key words: ", missing_key_words)
 
   /* Algorithmically calculate the fit score. */
-  const refined_score: number = CalculateFitScore(common_key_words, common_key_words.length, job_text_tokens.length, raw_keywords['required_skills'], raw_keywords['preferred_skills'])
+  const refined_score: number = CalculateFitScore(common_key_words, raw_score, raw_keywords['required_skills'], raw_keywords['preferred_skills'])
 
   /* DEBUG */
   console.log("Raw score: ", raw_score)
@@ -88,8 +90,7 @@ const Matcher = (array1: string[], array2: string[]) => {
 /* Fit Score calculator. */
 const CalculateFitScore = (
   matched_words: string[],
-  matched_length: number,
-  total_keywords: number,
+  og_score: number,
   required: string[],
   preferred: string[]
 ): number => {
@@ -135,7 +136,7 @@ const CalculateFitScore = (
   const combined_score: number = required_score + preferred_score;
 
   // Fit score as a percentage (scaled to 0–100)
-  const fit_score: number = Math.round(combined_score * 100);
+  const fit_score: number = Math.round(((combined_score * 100) + (og_score)) / 2);
 
   return fit_score;
 };

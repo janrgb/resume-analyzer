@@ -21,7 +21,7 @@ export const generateText = async ({ prompt }) => {
   const KeywordsMatched = await openai.chat.completions.create({
     model: "gpt-3.5-turbo-16k",
     messages: [
-      { role: "assistant", content: `Please generate two arrays of one-word matched keywords in JSON format: a required_skills array and preferred_skills array. It must be based on the following job description: ${prompt.job_description.slice(0, 10000)}. Format these two arrays as two properties of a JSON object. Respond only with a valid JSON object, e.g., {required_skills: ["Python", "AWS", "Azure"], preferred_skills: ["Communication", "Management", "Java"]}.` }
+      { role: "assistant", content: `Please generate two arrays of one-word (e.g. "Python" but not "Python Programming") matched keywords in JSON format: a required_skills array and preferred_skills array. Each array can have max 5 elements. It must be based on the following job description: ${prompt.job_description.slice(0, 10000)}. Format these two arrays as two properties of a JSON object. Respond only with a valid JSON object, e.g., {required_skills: ["Python", "AWS", "Azure"], preferred_skills: ["Communication", "Management", "Java"]}.` }
     ]
   })
 
