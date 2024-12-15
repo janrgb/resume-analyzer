@@ -195,85 +195,124 @@ const DashboardPage = () => {
 function generatePDF(fitScore, matchedKeywords, feedback) {
   try {
     const doc = new jsPDF();
+    const pageHeight = doc.internal.pageSize.height; // Height of the page
+    const lineHeight = 7; // Standard line height
+    let currentY = 20; // Initialize starting position for content
 
     // Get the current date and time
     const now = new Date();
     const timestamp = now.toLocaleString();
 
-    // Title and separator
+    // Title and timestamp
     doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text("Resume Analysis Report", 105, 20, { align: "center" });
+    doc.text("Resume Analysis Report", 105, currentY, { align: "center" });
 
-    // Add timestamp in the header (aligned to the far right)
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(timestamp, 200, 20, { align: "right" });
+    doc.text(timestamp, 200, currentY, { align: "right" });
 
+    currentY += 10; // Move down
     doc.setLineWidth(0.5);
-    doc.line(10, 25, 200, 25);
+    doc.line(10, currentY, 200, currentY);
+    currentY += 10; // Move down
 
-    // Fit Score section
+    // Fit Score
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text("Fit Score:", 10, 35);
+    doc.text("Fit Score:", 10, currentY);
     doc.setFont("helvetica", "normal");
-    doc.text(`${fitScore}%`, 35, 35);
+    doc.text(`${fitScore}%`, 35, currentY);
+    currentY += 10; // Move down
 
-    // Matched Skills section
+    // Matched Skills
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text("Matched Skills", 10, 50);
+    doc.text("Matched Skills", 10, currentY);
+    currentY += 10;
+
     doc.setFont("helvetica", "normal");
     if (Array.isArray(matchedKeywords) && matchedKeywords.length > 0) {
       doc.setFontSize(12);
-      matchedKeywords.forEach((skill, index) => {
-        doc.text(`- ${skill}`, 20, 60 + index * 7);
+      matchedKeywords.forEach((skill) => {
+        if (currentY + lineHeight > pageHeight) {
+          doc.addPage();
+          currentY = 10; // Reset to top margin of new page
+        }
+        doc.text(`- ${skill}`, 20, currentY);
+        currentY += lineHeight;
       });
     } else {
+      if (currentY + lineHeight > pageHeight) {
+        doc.addPage();
+        currentY = 10;
+      }
       doc.setFontSize(12);
-      doc.text("No skills matched.", 20, 55);
+      doc.text("No skills matched.", 20, currentY);
+      currentY += lineHeight;
     }
 
-    // Feedback section
-    const feedbackStartY = 55 + (matchedKeywords.length || 1) * 10;
+    // Feedback
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
-    doc.text("Feedback", 10, feedbackStartY);
-
+    if (currentY + 10 > pageHeight) {
+      doc.addPage();
+      currentY = 10;
+    }
+    doc.text("Feedback", 10, currentY);
+    currentY += 10;
+    doc.setFont("helvetica", "normal");
     if (feedback && (feedback.missing_keywords || feedback.suggestions)) {
       doc.setFontSize(12);
 
       // Missing Keywords
-      let y = feedbackStartY + 8;
       if (Array.isArray(feedback.missing_keywords) && feedback.missing_keywords.length > 0) {
-        doc.setFont("helvetica", "normal");
-        doc.text("Missing Keywords:", 20, y);
-        doc.setFont("helvetica", "normal");
-        feedback.missing_keywords.forEach((keyword, index) => {
-          doc.text(`- ${keyword}`, 30, y + (index + 1) * 7);
+        if (currentY + lineHeight > pageHeight) {
+          doc.addPage();
+          currentY = 10;
+        }
+        doc.text("Missing Keywords:", 20, currentY);
+        currentY += lineHeight;
+
+        feedback.missing_keywords.forEach((keyword) => {
+          if (currentY + lineHeight > pageHeight) {
+            doc.addPage();
+            currentY = 10;
+          }
+          doc.text(`- ${keyword}`, 30, currentY);
+          currentY += lineHeight;
         });
-        y += feedback.missing_keywords.length * 10 + 5;
       }
 
       // Suggestions
       if (Array.isArray(feedback.suggestions) && feedback.suggestions.length > 0) {
-        doc.setFont("helvetica", "normal");
-        doc.text("Suggestions:", 20, y);
-        y += 10;
+        if (currentY + lineHeight > pageHeight) {
+          doc.addPage();
+          currentY = 10;
+        }
+        doc.text("Suggestions:", 20, currentY);
+        currentY += lineHeight;
+
         feedback.suggestions.forEach((suggestion) => {
-          // Wrap long text
           const wrappedText = doc.splitTextToSize(suggestion, 160);
-          wrappedText.forEach((line, lineIndex) => {
-            const lineText = lineIndex === 0 ? `- ${line}` : `  ${line}`; // Add '-' only to the first line
-            doc.text(lineText, 30, y);
-            y += 6;
+          wrappedText.forEach((line) => {
+            if (currentY + lineHeight > pageHeight) {
+              doc.addPage();
+              currentY = 10;
+            }
+            doc.text(line, 30, currentY);
+            currentY += lineHeight;
           });
         });
       }
     } else {
+      if (currentY + lineHeight > pageHeight) {
+        doc.addPage();
+        currentY = 10;
+      }
       doc.setFontSize(12);
-      doc.text("No feedback available.", 20, feedbackStartY + 10);
+      doc.text("No feedback available.", 20, currentY);
+      currentY += lineHeight;
     }
 
     // Save the PDF
@@ -282,5 +321,6 @@ function generatePDF(fitScore, matchedKeywords, feedback) {
     console.error("Error generating PDF:", error);
   }
 }
+
 
 export default DashboardPage

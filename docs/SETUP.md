@@ -32,3 +32,10 @@ export OPENAI_API_KEY="INSERT_OPENAI_API_KEY"
 
 - Use `yarn redwood dev` or `yarn rw dev` to launch the app on localhost.
 - The database may not be synchronized. Use `yarn rw prisma migrate dev` to synchronize it.
+- Check USAGE.md for instructions on using the app.
+
+## Testing and Documentation
+
+- View GraphQL API documentation in the docs folder. Open any of the HTML source files on your browser to see the documentation.
+- Run `yarn rw test` to run unit tests. NOTE: At this point, >80% of unit tests are correct.
+- Run `yarn playwright test` to do e2e testing.
