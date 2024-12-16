@@ -3,7 +3,7 @@ import { compare } from 'bcrypt'
 import { users } from '../signup/signup'
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = 'your-secure-secret'
+const JWT_SECRET = process.env.JWT_SECRET
 const JWT_EXPIRATION = '1h'
 
 export const loginUser: MutationResolvers['loginUser'] = async ({ input }) => {
