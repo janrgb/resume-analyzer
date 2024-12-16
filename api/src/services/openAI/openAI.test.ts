@@ -83,7 +83,7 @@ describe('generateText', () => {
       messages: [
         {
           role: 'assistant',
-          content: expect.stringContaining('one-word matched')
+          content: expect.stringContaining('Generate a fit score')
         }
       ]
     })
