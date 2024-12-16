@@ -4,7 +4,7 @@
 1. Fork this repository.
 2. Clone the forked repo to your local machine.
 3. Navigate to the project directory.
-4. Ensure you have a .env file in the root of the project directory that has exported variables JWT_SECRET_KEY and OPENAI_API_KEY. If not, use a tool like `openssl` to generate a jwt secret key and obtain an openai api key. See example below.
+4. Ensure you have a .env file in the root of the project directory that has exported variables JWT_SECRET and OPENAI_API_KEY. If not, use a tool like `openssl` to generate a jwt secret key and obtain an openai api key from the openai API website. See example below.
 ```
 JWT_SECRET="INSERT_JWT_SECRET_KEY"
 export OPENAI_API_KEY="INSERT_OPENAI_API_KEY"
