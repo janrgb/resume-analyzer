@@ -1,5 +1,5 @@
 import { Metadata, useMutation } from '@redwoodjs/web'
-import { Form, TextField, Label, FieldError, Submit, SubmitHandler } from '@redwoodjs/forms'
+import { Form, TextField, Label, FieldError, Submit, SubmitHandler, PasswordField } from '@redwoodjs/forms'
 import { navigate } from '@redwoodjs/router'
 import RootGuard from 'src/components/RootGuard/RootGuard'
 import { useState } from 'react'
@@ -81,7 +81,7 @@ const LoginPage = () => {
               <Label className="login-label" name="password" errorClassName="error">
                 Password
               </Label>
-              <TextField
+              <PasswordField
                 name="password"
                 validation={{ required: true }}
                 errorClassName="error-field"
