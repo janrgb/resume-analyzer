@@ -1,0 +1,435 @@
+openapi: 3.0.3
+info:
+  title: Resume Analyzer
+  description: |-
+    This is a resume analyzer which accepts a resume and a job description and returns a fit score and suggestions for improvement.
+  version: 1.0.11
+servers:
+  - url: http://localhost:8910/login
+paths:
+  /api/signup:
+    post:
+      description: Request user's credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                username:
+                  type: string
+      responses:
+        '201':
+          description: User Has Been Registered Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: User Registered
+        '400':
+          description: Bad Request
+  /api/login:
+    post:
+      description: Login Endpoint With JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: JWT Token Has Been Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: jwt-token
+  /api/upload:
+    post:
+      description: Upload Your Resume
+      requestBody:
+        description: Upload Your Resume
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                resume:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Successful Resume Upload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success Message
+                  status:
+                    type: string
+                    description: Status Indicating Success
+        '400':
+          description: Invalid file type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error Message
+                  status:
+                    type: string
+                    description: Status Indicating Error
+  /api/description:
+    post:
+      description: Job Description Input
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              properties:
+                jobDescription:
+                  type: string
+                  description: Job Description Inputted By User
+      responses:
+        '200':
+          description: Successful Job Description Input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Success Message
+                  status:
+                    type: string
+                    description: Status Indicating Success
+        '400':
+          description: Job Description Exceeds Character Limit
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error Message
+                  status:
+                    type: string
+                    description: Status Indicating Error
+  /api/fit-score:
+    post:
+      description: Post Fit Score and Comments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              properties:
+                resumeText:
+                  type: string
+                  description: Resume Content
+                jobDescription:
+                  type: string
+                  description: Job Description Inputted By User
+
+      responses:
+        '200':
+          description: Fit Score and Feedback Successfully Returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fitScore:
+                    type: integer
+                    description: Generated Fit Score
+                  feedback:
+                    type: array
+                    items:
+                      type: string
+                      description: Generated Feedback
+                  keywords:
+                    type: array
+                    items:
+                      type: string
+                      description: Generated Keywords
+        '400':
+          description: Invalid Input Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error Message
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error Message
+  /api/openAI:
+    post:
+      description: Prompts AI to Generate Fit Score and Feedback/Keywords
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                content:
+                  type: string
+                  description: content to prompt AI
+      responses:
+        '200':
+          description: Successfully Generated Fit Score and Feedback/Keywords
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fitScore:
+                    type: string
+                  feedback:
+                    type: string
+                  keywords:
+                    type: array
+                    items:
+                      type: string
+        '400':
+          description: Invalid Input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/posts:
+    get:
+      description: Get All Posts
+      responses:
+        '200':
+          description: Retrieved All Posts Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    createdAt:
+                      type: string
+                      format: date-time
+    post:
+      description: Create Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+      responses:
+        '200':
+          description: Expected Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  body:
+                    type: string
+    put:
+      description: Update Post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+      responses:
+        '200':
+          description: Successfully Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  body:
+                    type: string
+  /api/posts/{id}:
+    get:
+      description: Get Single Post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Retrieve the ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully Retrieved One Post
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  title:
+                    type: string
+                  body:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+    delete:
+      description: Delete Post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Post Deleted Successfully
+  /api/temporary_memory_storage:
+    post:
+      description: Post Resume and Job Description
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resume:
+                  type: string
+                  format: binary
+                jobDescription:
+                  type: string
+                  description: Inputted Job Description
+      responses:
+        '200':
+          description: "Resume Text and Job Description Was Successfully Extracted and Saved"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          description: Invalid Input Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+  /api/validation_for_input_types:
+    post:
+      description: Validate Resume and Job Description
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resume:
+                  type: string
+                  format: binary
+                jobDescription:
+                  type: string
+                  description: Inputted Job Description
+      responses:
+        '200':
+          description: "Resume Text and Job Description Was Successfully Validated"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          description: Invalid Input Data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
