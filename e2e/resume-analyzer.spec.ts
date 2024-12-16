@@ -11,7 +11,7 @@ function generateUniqueEmail() {
 }
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('http://192.168.56.1:8910/', { timeout: 60000 });
+  await page.goto('http://localhost:8910/', { timeout: 60000 });
   uniqueUsername = `testuser_${Date.now()}`;
   uniqueEmail = generateUniqueEmail();
   password = 'securepassword123';
