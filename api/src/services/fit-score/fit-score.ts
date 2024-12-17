@@ -1,5 +1,6 @@
 import type { MutationResolvers } from 'types/graphql'
 import { removeStopwords, eng } from 'stopword'
+import { match } from 'assert'
 
 export const refineInput: MutationResolvers['refineInput'] = async ({ input }) => {
   /* Grab the raw values from ChatGPT. */
@@ -40,7 +41,7 @@ export const refineInput: MutationResolvers['refineInput'] = async ({ input }) =
   console.log("Missing key words: ", missing_key_words)
 
   /* Algorithmically calculate the fit score. */
-  const refined_score: number = CalculateFitScore(common_key_words, raw_score, raw_keywords['required_skills'], raw_keywords['preferred_skills'])
+  const refined_score: number = CalculateFitScore(common_key_words.length, missing_key_words.length, res_text_tokens, raw_keywords['required_skills'], raw_keywords['preferred_skills'], raw_score)
 
   /* DEBUG */
   console.log("Raw score: ", raw_score)
@@ -87,12 +88,14 @@ const Matcher = (array1: string[], array2: string[]) => {
 }
 
 /* Fit Score calculator. */
-/* Fit Score calculator. */
+
 const CalculateFitScore = (
+  common_words: number,
+  missing_words: number,
   matched_words: string[],
-  og_score: number,
   required: string[],
-  preferred: string[]
+  preferred: string[],
+  raw: number
 ): number => {
 
   // Firstly, there is an edge case where we have no required or preferred skills: in that case, the fit score should be 100.
@@ -113,9 +116,13 @@ const CalculateFitScore = (
     matched_words.includes(skill)
   ).length;
 
+  console.log("matched_required: ", matched_required)
+
   const matched_preferred: number = lowerPreferredSkills.filter((skill) =>
     matched_words.includes(skill)
   ).length;
+
+  console.log("matched_preferred: ", matched_preferred)
 
   // Total required and preferred skill counts
   const total_required: number = lowerRequiredSkills.length;
@@ -125,19 +132,24 @@ const CalculateFitScore = (
   const required_score: number =
     total_required > 0
       ? (matched_required / total_required) * required_weight
-      : 0;
+      : 0.7;
+
+  console.log("Required score: ", required_score)
 
   const preferred_score: number =
     total_preferred > 0
       ? (matched_preferred / total_preferred) * preferred_weight
-      : 0;
+      : 0.3;
+
+  console.log("Preferred score: ", preferred_score)
 
   // Combine weighted scores
-  const combined_score: number = required_score + preferred_score;
+  const combined_score: number = Math.min(required_score + preferred_score + (common_words / (common_words + missing_words)) + ((0.2 * raw) / 100), 1);
 
   // Fit score as a percentage (scaled to 0–100)
-  const fit_score: number = Math.round(((combined_score * 100) + (og_score)) / 2);
+  const fit_score: number = Math.round(combined_score * 100);
 
   return fit_score;
-};
+
+}
 
